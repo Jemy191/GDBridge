@@ -1,0 +1,23 @@
+name: Test
+
+on:
+  push:
+    branches: ['main']
+    paths: ['{{cookiecutter.name}}/**', '{{cookiecutter.name}}.Test/**']
+  pull_request:
+    branches: [ "*" ]
+    paths: ['{{cookiecutter.name}}/**', '{{cookiecutter.name}}.Test/**']
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      
+    - name: Test
+      run: dotnet test --verbosity normal

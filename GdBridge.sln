@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GdBridge", "GdBridge\GdBridge.csproj", "{BEC695B9-9E07-42A9-A8E8-57A6CABD99F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GdBridge.Test", "GdBridge.Test\GdBridge.Test.csproj", "{294CFEF5-1640-419C-91BD-9222602B0237}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BEC695B9-9E07-42A9-A8E8-57A6CABD99F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEC695B9-9E07-42A9-A8E8-57A6CABD99F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEC695B9-9E07-42A9-A8E8-57A6CABD99F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEC695B9-9E07-42A9-A8E8-57A6CABD99F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{294CFEF5-1640-419C-91BD-9222602B0237}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{294CFEF5-1640-419C-91BD-9222602B0237}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{294CFEF5-1640-419C-91BD-9222602B0237}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{294CFEF5-1640-419C-91BD-9222602B0237}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
