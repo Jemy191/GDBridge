@@ -43,11 +43,9 @@
 
     <!--To add non generator see this: https://github.com/dotnet/roslyn/discussions/47517-->
     <ItemGroup>
-        <PackageReference Include="GDParser" Version="0.3.0"
-                          GeneratePathProperty="true"
-                          IncludeAssets="all"/>
+        <PackageReference Include="GDParser" Version="0.4.0" GeneratePathProperty="true" IncludeAssets="all" />
 
-        <TargetPathWithTargetPlatformMoniker Include="$(PKGGDParser)\lib\netstandard2.0\Parser.dll" IncludeRuntimeDependency="false"/>
+        <TargetPathWithTargetPlatformMoniker Include="$(PKGGDParser)\lib\netstandard2.0\GDParser.dll" IncludeRuntimeDependency="false"/>
     </ItemGroup>
 
     <PropertyGroup>
@@ -56,13 +54,13 @@
 
     <Target Name="GetDependencyTargetPaths">
         <ItemGroup>
-            <TargetPathWithTargetPlatformMoniker Include="$(PKGGDParser)\lib\netstandard2.0\Parser.dll" IncludeRuntimeDependency="false"/>
+            <TargetPathWithTargetPlatformMoniker Include="$(PKGGDParser)\lib\netstandard2.0\GDParser.dll" IncludeRuntimeDependency="false"/>
         </ItemGroup>
     </Target>
 
     <ItemGroup>
         <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
-        <None Include="$(PKGGDParser)\lib\netstandard2.0\Parser.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
+        <None Include="$(PKGGDParser)\lib\netstandard2.0\GDParser.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
     </ItemGroup>
 
     <ItemGroup>
