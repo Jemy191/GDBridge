@@ -5,7 +5,7 @@ on:
       - published
 env:
   Version: ${{ github.event.release.tag_name }}
-  PackageFile: {{cookiecutter.name}}.${{ github.event.release.tag_name }}.nupkg
+  PackageFile: GDBridge.${{ github.event.release.tag_name }}.nupkg
   
 jobs:
   create_nuget:
