@@ -11,7 +11,7 @@
 
         <RootNamespace>GDBridge.Generator</RootNamespace>
         <PackageId>GDBridge.Generator</PackageId>
-
+        
         <Title>GDBridge.Generator</Title>
         <Authors>Émilie Collard</Authors>
         <Description>Source generator package to simplify C# -> GDScript interoperability</Description>
@@ -38,6 +38,7 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="SourceGeneratorUtils" Version="1.4.3" />
     </ItemGroup>
 
 
@@ -61,9 +62,5 @@
     <ItemGroup>
         <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
         <None Include="$(PKGGDParser)\lib\netstandard2.0\GDParser.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\..\GDBridge\GDBridge.csproj" />
     </ItemGroup>
 </Project>

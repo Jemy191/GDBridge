@@ -1,6 +1,7 @@
 using System.Collections.Immutable;
 using GDParser;
 using Microsoft.CodeAnalysis;
+using SourceGeneratorUtils;
 
 namespace GDBridge.Generator;
 
@@ -14,7 +15,7 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
             .Select((t, ct) => t.GetText(ct)?.ToString()!)
             .Where(t => t is not null)
             .Collect();
-        
+
         context.RegisterSourceOutput(scriptSources, Generate);
     }
 
@@ -23,23 +24,34 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
         foreach (var script in scripts)
         {
             var gdClass = ClassParser.Parse(script);
-            if(gdClass?.ClassName is null)
+            if (gdClass?.ClassName is null)
                 continue;
 
             var source = GenerateClass(gdClass);
-            
+
             context.AddSource(gdClass.ClassName, source);
         }
     }
     static string GenerateClass(GdClass gdClass)
     {
-        var source =
-            $$"""
-              public class {{gdClass.ClassName}}
-              {
-              }
-              """;
+        var source = new SourceWriter();
+        source.WriteLine(
+                $$"""
+                  using Godot;
+                  using GodotBridge;
 
-        return source;
+                  namespace GDScript.Bridge;
+
+                  [GlobalClass]
+                  public partial class {{gdClass.ClassName}} : GdScriptBridge
+                  """)
+            .OpenBlock()
+            .Variables(gdClass.Variables)
+            .WriteLine($"public {gdClass.ClassName}(GodotObject gdObject) : base(gdObject) {{}}")
+            .Functions(gdClass.Functions)
+            .CloseBlock();
+
+        return source.ToString();
     }
+
 }

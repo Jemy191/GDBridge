@@ -1,4 +1,11 @@
 ﻿//HintName: GameState.cs
-public class GameState
+using Godot;
+using GodotBridge;
+
+namespace GDScript.Bridge;
+
+[GlobalClass]
+public partial class GameState : GdScriptBridge
 {
+    public GameState(GodotObject gdObject) : base(gdObject) {}
 }
