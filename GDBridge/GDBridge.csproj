@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net7.0</TargetFrameworks>
+        <TargetFrameworks>net7.0; netstandard2.0</TargetFrameworks>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>default</LangVersion>
         
-        <PackageId>GdBridge</PackageId>
-        <Title>GdBridge</Title>
+        <PackageId>GDBridge</PackageId>
+        <Title>GDBridge</Title>
         <Authors>Émilie Collard</Authors>
         <Description>Package to simplify C# -> GDScript interoperability</Description>
         <PackageTags>Godot GDScript Bridge GDParser interoperability simplify</PackageTags>

@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <IsPackable>false</IsPackable>
+        <IsPackable>true</IsPackable>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
 
@@ -11,7 +11,21 @@
 
         <RootNamespace>GDBridge.Generator</RootNamespace>
         <PackageId>GDBridge.Generator</PackageId>
+
+        <Title>GDBridge.Generator</Title>
+        <Authors>Émilie Collard</Authors>
+        <Description>Source generator package to simplify C# -> GDScript interoperability</Description>
+        <PackageTags>Godot GDScript Bridge GDParser interoperability simplify generator</PackageTags>
+        <PackageProjectUrl>https://github.com/TheJemy191/GDBridge/tree/main/GDBridge.Generator</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/TheJemy191/GDBridge/tree/main/GDBridge.Generator</RepositoryUrl>
+        <PackageLicenseExpression>Unlicense</PackageLicenseExpression>
+        <RepositoryType>Github</RepositoryType>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
+
+    <ItemGroup>
+        <None Include="..\README.md" Pack="true" PackagePath=""/>
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
@@ -20,8 +34,39 @@
         </PackageReference>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.6.0"/>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.6.0"/>
+        <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 
 
+    <!--To add non generator see this: https://github.com/dotnet/roslyn/discussions/47517-->
+    <ItemGroup>
+        <PackageReference Include="GDParser" Version="0.3.0"/>
+        <PackageReference Include="GDParser" Version="0.3.0"
+                          GeneratePathProperty="true"
+                          IncludeAssets="all"/>
 
+        <TargetPathWithTargetPlatformMoniker Include="$(PKGGDParser)\lib\netstandard2.0\GDParser.dll" IncludeRuntimeDependency="false"/>
+    </ItemGroup>
+
+    <PropertyGroup>
+        <GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
+    </PropertyGroup>
+
+    <Target Name="GetDependencyTargetPaths">
+        <ItemGroup>
+            <TargetPathWithTargetPlatformMoniker Include="$(PKGGDParser)\lib\netstandard2.0\GDParser.dll" IncludeRuntimeDependency="false"/>
+        </ItemGroup>
+    </Target>
+
+    <ItemGroup>
+        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
+        <None Include="$(PKGGDParser)\lib\netstandard2.0\GDParser.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\GDBridge\GDBridge.csproj" />
+    </ItemGroup>
 </Project>
