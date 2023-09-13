@@ -1,3 +1,4 @@
+[![Test](https://github.com/TheJemy191/GDBridge/actions/workflows/Test.yml/badge.svg)](https://github.com/TheJemy191/GDBridge/actions/workflows/Test.yml)
 # GDBridge
 
 Simple package to simplify C# -> GDScript interoperability.
