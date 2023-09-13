@@ -1,6 +1,6 @@
 ﻿//HintName: CardPiles.cs
 using Godot;
-using GodotBridge;
+using GdBridge;
 
 namespace GDScript.Bridge;
 

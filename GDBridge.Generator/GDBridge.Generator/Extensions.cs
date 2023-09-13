@@ -15,11 +15,11 @@ static class Extensions
             if (variable.Name.StartsWith("_"))
                 continue;
 
-            source.WriteLine($"{variable.Type} {variable.Name}")
+            source.WriteLine($"{variable.Type.ToCSharpTypeString()} {variable.Name}")
                 .OpenBlock()
                 .WriteLine(
                     $"""
-                     get => GdObject.Get("{variable.Name}");
+                     get => GdObject.Get("{variable.Name}"){GetTypeCast(variable.Type)};
                      set => GdObject.Set("{variable.Name}", value);
                      """)
                 .CloseBlock()
@@ -37,19 +37,27 @@ static class Extensions
                 continue;
 
             source.WriteEmptyLines(1)
-                .WriteLine($"""{function.ReturnType} {function.Name}({InParameters(function.Parameters)}) => GdObject.Call("{function.Name}"{CallParameters(function.Parameters)});""");
+                .WriteLine($"""{function.ReturnType.ToCSharpTypeString()} {function.Name}({InParameters(function.Parameters)}) => GdObject.Call("{function.Name}"{CallParameters(function.Parameters)}){GetTypeCast(function.ReturnType)};""");
         }
 
         return source;
     }
-    public static string InParameters(IEnumerable<GdVariable> parameters) => string.Join(", ", parameters.Select(InParameter));
-    public static string InParameter(GdVariable parameter) => $"{parameter.Type} {parameter.Name}";
+    static string InParameters(IEnumerable<GdVariable> parameters) => string.Join(", ", parameters.Select(InParameter));
+    static string InParameter(GdVariable parameter) => $"{parameter.Type.ToCSharpTypeString()} {parameter.Name}";
 
-    public static string CallParameters(IEnumerable<GdVariable> parameters)
+    static string CallParameters(IEnumerable<GdVariable> parameters)
     {
         var variables = parameters.ToList();
         if (!variables.Any())
             return "";
         return $", {string.Join(", ", variables.Select(p => p.Name))}";
+    }
+    
+    static string GetTypeCast(GdType type)
+    {
+        if (type.BuiltInType is GdBuiltInType.Variant or GdBuiltInType.@void)
+            return "";
+        
+        return $".As<{type.ToCSharpTypeString()}>()";
     }
 }

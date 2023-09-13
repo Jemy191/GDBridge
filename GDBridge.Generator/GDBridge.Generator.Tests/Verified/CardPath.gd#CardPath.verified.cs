@@ -1,39 +1,39 @@
 ﻿//HintName: CardPath.cs
 using Godot;
-using GodotBridge;
+using GdBridge;
 
 namespace GDScript.Bridge;
 
 [GlobalClass]
 public partial class CardPath : GdScriptBridge
 {
-    int width
+    long width
     {
-        get => GdObject.Get("width");
+        get => GdObject.Get("width").As<long>();
         set => GdObject.Set("width", value);
     }
 
-    int height
+    long height
     {
-        get => GdObject.Get("height");
+        get => GdObject.Get("height").As<long>();
         set => GdObject.Set("height", value);
     }
 
-    float curve_ratio
+    double curve_ratio
     {
-        get => GdObject.Get("curve_ratio");
+        get => GdObject.Get("curve_ratio").As<double>();
         set => GdObject.Set("curve_ratio", value);
     }
 
-    float separation
+    double separation
     {
-        get => GdObject.Get("separation");
+        get => GdObject.Get("separation").As<double>();
         set => GdObject.Set("separation", value);
     }
 
-    float padding
+    double padding
     {
-        get => GdObject.Get("padding");
+        get => GdObject.Get("padding").As<double>();
         set => GdObject.Set("padding", value);
     }
 

@@ -38,7 +38,7 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
         source.WriteLine(
                 $$"""
                   using Godot;
-                  using GodotBridge;
+                  using GdBridge;
 
                   namespace GDScript.Bridge;
 

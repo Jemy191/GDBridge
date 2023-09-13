@@ -1,25 +1,25 @@
 ﻿//HintName: DeckEntry.cs
 using Godot;
-using GodotBridge;
+using GdBridge;
 
 namespace GDScript.Bridge;
 
 [GlobalClass]
 public partial class DeckEntry : GdScriptBridge
 {
-    int deckId
+    long deckId
     {
-        get => GdObject.Get("deckId");
+        get => GdObject.Get("deckId").As<long>();
         set => GdObject.Set("deckId", value);
     }
 
     ChooseDeck chooseDeck
     {
-        get => GdObject.Get("chooseDeck");
+        get => GdObject.Get("chooseDeck").As<ChooseDeck>();
         set => GdObject.Set("chooseDeck", value);
     }
 
     public DeckEntry(GodotObject gdObject) : base(gdObject) {}
 
-    Variant setup(String deckName, int deckId, ChooseDeck chooseDeck) => GdObject.Call("setup", deckName, deckId, chooseDeck);
+    Variant setup(string deckName, long deckId, ChooseDeck chooseDeck) => GdObject.Call("setup", deckName, deckId, chooseDeck);
 }

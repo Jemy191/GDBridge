@@ -1,6 +1,6 @@
 ﻿//HintName: Hand.cs
 using Godot;
-using GodotBridge;
+using GdBridge;
 
 namespace GDScript.Bridge;
 
@@ -9,13 +9,13 @@ public partial class Hand : GdScriptBridge
 {
     PackedScene card_scene
     {
-        get => GdObject.Get("card_scene");
+        get => GdObject.Get("card_scene").As<PackedScene>();
         set => GdObject.Set("card_scene", value);
     }
 
     Node card_container
     {
-        get => GdObject.Get("card_container");
+        get => GdObject.Get("card_container").As<Node>();
         set => GdObject.Set("card_container", value);
     }
 

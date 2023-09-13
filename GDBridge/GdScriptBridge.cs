@@ -2,9 +2,9 @@ using Godot;
 
 namespace GdBridge;
 
-public abstract class ScriptBridge : GodotObject
+public abstract class GdScriptBridge : GodotObject
 {
     protected readonly GodotObject GdObject;
 
-    protected ScriptBridge(GodotObject gdObject) => GdObject = gdObject;
+    protected GdScriptBridge(GodotObject gdObject) => GdObject = gdObject;
 }

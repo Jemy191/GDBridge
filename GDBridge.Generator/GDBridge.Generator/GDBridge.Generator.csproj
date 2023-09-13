@@ -38,13 +38,12 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="SourceGeneratorUtils" Version="1.4.3" />
     </ItemGroup>
 
 
     <!--To add non generator see this: https://github.com/dotnet/roslyn/discussions/47517-->
     <ItemGroup>
-        <PackageReference Include="GDParser" Version="0.4.0" GeneratePathProperty="true" IncludeAssets="all" />
+        <PackageReference Include="GDParser" Version="0.6.0" GeneratePathProperty="true" IncludeAssets="all" />
 
         <TargetPathWithTargetPlatformMoniker Include="$(PKGGDParser)\lib\netstandard2.0\GDParser.dll" IncludeRuntimeDependency="false"/>
     </ItemGroup>
@@ -62,5 +61,30 @@
     <ItemGroup>
         <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
         <None Include="$(PKGGDParser)\lib\netstandard2.0\GDParser.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
+    </ItemGroup>
+
+    
+    
+    
+
+    <ItemGroup>
+        <PackageReference Include="SourceGeneratorUtils" Version="1.4.3" GeneratePathProperty="true" IncludeAssets="all"/>
+
+        <TargetPathWithTargetPlatformMoniker Include="$(PKGSourceGeneratorUtils)\lib\netstandard2.0\SourceGeneratorUtils.dll" IncludeRuntimeDependency="false"/>
+    </ItemGroup>
+
+    <PropertyGroup>
+        <GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
+    </PropertyGroup>
+
+    <Target Name="GetDependencyTargetPaths">
+        <ItemGroup>
+            <TargetPathWithTargetPlatformMoniker Include="$(PKGSourceGeneratorUtils)\lib\netstandard2.0\SourceGeneratorUtils.dll" IncludeRuntimeDependency="false"/>
+        </ItemGroup>
+    </Target>
+
+    <ItemGroup>
+        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
+        <None Include="$(PKGSourceGeneratorUtils)\lib\netstandard2.0\SourceGeneratorUtils.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
     </ItemGroup>
 </Project>

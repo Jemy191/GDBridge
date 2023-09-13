@@ -1,6 +1,6 @@
 ﻿//HintName: Arena.cs
 using Godot;
-using GodotBridge;
+using GdBridge;
 
 namespace GDScript.Bridge;
 
@@ -9,7 +9,7 @@ public partial class Arena : GdScriptBridge
 {
     NodePath game_startup
     {
-        get => GdObject.Get("game_startup");
+        get => GdObject.Get("game_startup").As<NodePath>();
         set => GdObject.Set("game_startup", value);
     }
 
