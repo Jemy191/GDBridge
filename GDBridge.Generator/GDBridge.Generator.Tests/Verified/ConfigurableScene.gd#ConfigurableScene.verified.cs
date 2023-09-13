@@ -1,12 +1,10 @@
 ﻿//HintName: ConfigurableScene.cs
 using Godot;
-using GdBridge;
-
-namespace GDScript.Bridge;
+using GDBridge;
 
 [GlobalClass]
-public partial class ConfigurableScene : GdScriptBridge
+public partial class ConfigurableSceneBridge : GDScriptBridge
 {
-    public const string ClassName = "ConfigurableScene";
-    public ConfigurableScene(GodotObject gdObject) : base(gdObject) {}
+    public const string ClassName = "ConfigurableSceneBridge";
+    public ConfigurableSceneBridge(GodotObject gdObject) : base(gdObject) {}
 }

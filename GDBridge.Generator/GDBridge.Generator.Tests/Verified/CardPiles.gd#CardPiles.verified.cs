@@ -1,12 +1,10 @@
 ﻿//HintName: CardPiles.cs
 using Godot;
-using GdBridge;
-
-namespace GDScript.Bridge;
+using GDBridge;
 
 [GlobalClass]
-public partial class CardPiles : GdScriptBridge
+public partial class CardPilesBridge : GDScriptBridge
 {
-    public const string ClassName = "CardPiles";
-    public CardPiles(GodotObject gdObject) : base(gdObject) {}
+    public const string ClassName = "CardPilesBridge";
+    public CardPilesBridge(GodotObject gdObject) : base(gdObject) {}
 }

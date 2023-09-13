@@ -1,26 +1,24 @@
 ﻿//HintName: Card.cs
 using Godot;
-using GdBridge;
-
-namespace GDScript.Bridge;
+using GDBridge;
 
 [GlobalClass]
-public partial class Card : GdScriptBridge
+public partial class CardBridge : GDScriptBridge
 {
-    public const string ClassName = "Card";
-    Label name_label
+    public const string ClassName = "CardBridge";
+    public Label name_label
     {
         get => GdObject.Get("name_label").As<Label>();
         set => GdObject.Set("name_label", value);
     }
 
-    Label cost_label
+    public Label cost_label
     {
         get => GdObject.Get("cost_label").As<Label>();
         set => GdObject.Set("cost_label", value);
     }
 
-    public Card(GodotObject gdObject) : base(gdObject) {}
+    public CardBridge(GodotObject gdObject) : base(gdObject) {}
 
-    Variant setup(string name, string cost) => GdObject.Call("setup", name, cost);
+    public Variant setup(string name, string cost) => GdObject.Call("setup", name, cost);
 }

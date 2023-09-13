@@ -1,13 +1,13 @@
 using Godot;
 
-namespace GdBridge;
+namespace GDBridge;
 
 public class GdScriptBridgeFactory
 {
     readonly Node currentNode;
     public GdScriptBridgeFactory(Node currentNode) => this.currentNode = currentNode;
 
-    public T ResolveNode<T>(NodePath nodePath) where T : GdScriptBridge
+    public T ResolveBridge<T>(NodePath nodePath) where T : GDScriptBridge
     {
         var node = currentNode.GetNode(nodePath);
         var output = (T)Activator.CreateInstance(typeof(T), node)!;

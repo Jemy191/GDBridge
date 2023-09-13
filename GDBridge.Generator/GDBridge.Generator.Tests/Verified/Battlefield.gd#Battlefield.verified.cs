@@ -1,12 +1,10 @@
 ﻿//HintName: Battlefield.cs
 using Godot;
-using GdBridge;
-
-namespace GDScript.Bridge;
+using GDBridge;
 
 [GlobalClass]
-public partial class Battlefield : GdScriptBridge
+public partial class BattlefieldBridge : GDScriptBridge
 {
-    public const string ClassName = "Battlefield";
-    public Battlefield(GodotObject gdObject) : base(gdObject) {}
+    public const string ClassName = "BattlefieldBridge";
+    public BattlefieldBridge(GodotObject gdObject) : base(gdObject) {}
 }

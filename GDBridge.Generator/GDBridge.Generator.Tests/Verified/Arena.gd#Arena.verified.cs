@@ -1,20 +1,18 @@
 ﻿//HintName: Arena.cs
 using Godot;
-using GdBridge;
-
-namespace GDScript.Bridge;
+using GDBridge;
 
 [GlobalClass]
-public partial class Arena : GdScriptBridge
+public partial class ArenaBridge : GDScriptBridge
 {
-    public const string ClassName = "Arena";
-    NodePath game_startup
+    public const string ClassName = "ArenaBridge";
+    public NodePath game_startup
     {
         get => GdObject.Get("game_startup").As<NodePath>();
         set => GdObject.Set("game_startup", value);
     }
 
-    public Arena(GodotObject gdObject) : base(gdObject) {}
+    public ArenaBridge(GodotObject gdObject) : base(gdObject) {}
 
-    Variant on_configure(Variant deck_id_in) => GdObject.Call("on_configure", deck_id_in);
+    public Variant on_configure(Variant deck_id_in) => GdObject.Call("on_configure", deck_id_in);
 }

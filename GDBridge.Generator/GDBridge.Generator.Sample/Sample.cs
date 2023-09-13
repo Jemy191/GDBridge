@@ -1,26 +1,21 @@
-using GdBridge;
-using GDScript.Bridge;
 using Godot;
 
 namespace GDBridge.Generator.Sample
 {
     class Sample : Node
     {
-        [Export(PropertyHint.NodePathValidTypes, Arena.ClassName)] NodePath arena = null!;
+        [Export(PropertyHint.NodePathValidTypes, ArenaBridge.ClassName)] NodePath arena = null!;
         
         void Init()
         {
-            var myGDScript = new GdScriptBridgeFactory(this).ResolveNode<Arena>(arena);
+            var myGDScript = new GdScriptBridgeFactory(this).ResolveBridge<ArenaBridge>(arena);
 
-            myGDScript.OnConfigure(42);
+            myGDScript.on_configure(42);
         }
     }
 }
 
-namespace GDScript.Bridge
+partial class ArenaBridge
 {
-    partial class Arena
-    {
-        public void OnConfigure(int deckId) => on_configure(deckId);
-    }
+    public void DoSomethingElse(int deckId) => on_configure(deckId);
 }

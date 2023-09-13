@@ -1,30 +1,28 @@
 ﻿//HintName: ChooseDeck.cs
 using Godot;
-using GdBridge;
-
-namespace GDScript.Bridge;
+using GDBridge;
 
 [GlobalClass]
-public partial class ChooseDeck : GdScriptBridge
+public partial class ChooseDeckBridge : GDScriptBridge
 {
-    public const string ClassName = "ChooseDeck";
-    PackedScene deckEntryScene
+    public const string ClassName = "ChooseDeckBridge";
+    public PackedScene deckEntryScene
     {
         get => GdObject.Get("deckEntryScene").As<PackedScene>();
         set => GdObject.Set("deckEntryScene", value);
     }
 
-    PackedScene deckBuilderScene
+    public PackedScene deckBuilderScene
     {
         get => GdObject.Get("deckBuilderScene").As<PackedScene>();
         set => GdObject.Set("deckBuilderScene", value);
     }
 
-    public ChooseDeck(GodotObject gdObject) : base(gdObject) {}
+    public ChooseDeckBridge(GodotObject gdObject) : base(gdObject) {}
 
-    Variant setup(Godot.Collections.Array<DeckData> decks) => GdObject.Call("setup", decks);
+    public Variant setup(Godot.Collections.Array decks) => GdObject.Call("setup", decks);
 
-    long choose_deck() => GdObject.Call("choose_deck").As<long>();
+    public long choose_deck() => GdObject.Call("choose_deck").As<long>();
 
-    void new_deck() => GdObject.Call("new_deck");
+    public void new_deck() => GdObject.Call("new_deck");
 }

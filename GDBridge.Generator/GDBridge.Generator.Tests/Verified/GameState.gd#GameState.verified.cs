@@ -1,12 +1,10 @@
 ﻿//HintName: GameState.cs
 using Godot;
-using GdBridge;
-
-namespace GDScript.Bridge;
+using GDBridge;
 
 [GlobalClass]
-public partial class GameState : GdScriptBridge
+public partial class GameStateBridge : GDScriptBridge
 {
-    public const string ClassName = "GameState";
-    public GameState(GodotObject gdObject) : base(gdObject) {}
+    public const string ClassName = "GameStateBridge";
+    public GameStateBridge(GodotObject gdObject) : base(gdObject) {}
 }

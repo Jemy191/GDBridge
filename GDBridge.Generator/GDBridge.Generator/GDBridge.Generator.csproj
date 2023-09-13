@@ -43,7 +43,7 @@
 
     <!--To add non generator see this: https://github.com/dotnet/roslyn/discussions/47517-->
     <ItemGroup>
-        <PackageReference Include="GDParser" Version="0.6.0" GeneratePathProperty="true" IncludeAssets="all" />
+        <PackageReference Include="GDParser" Version="0.7.0" GeneratePathProperty="true" IncludeAssets="all" />
 
         <TargetPathWithTargetPlatformMoniker Include="$(PKGGDParser)\lib\netstandard2.0\GDParser.dll" IncludeRuntimeDependency="false"/>
     </ItemGroup>

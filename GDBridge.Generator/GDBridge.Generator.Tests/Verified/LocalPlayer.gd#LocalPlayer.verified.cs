@@ -1,14 +1,12 @@
 ﻿//HintName: LocalPlayer.cs
 using Godot;
-using GdBridge;
-
-namespace GDScript.Bridge;
+using GDBridge;
 
 [GlobalClass]
-public partial class LocalPlayer : GdScriptBridge
+public partial class LocalPlayerBridge : GDScriptBridge
 {
-    public const string ClassName = "LocalPlayer";
-    public LocalPlayer(GodotObject gdObject) : base(gdObject) {}
+    public const string ClassName = "LocalPlayerBridge";
+    public LocalPlayerBridge(GodotObject gdObject) : base(gdObject) {}
 
-    void ready_to_play() => GdObject.Call("ready_to_play");
+    public void ready_to_play() => GdObject.Call("ready_to_play");
 }

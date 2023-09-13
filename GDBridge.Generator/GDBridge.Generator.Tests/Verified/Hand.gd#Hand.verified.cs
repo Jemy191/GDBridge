@@ -1,24 +1,22 @@
 ﻿//HintName: Hand.cs
 using Godot;
-using GdBridge;
-
-namespace GDScript.Bridge;
+using GDBridge;
 
 [GlobalClass]
-public partial class Hand : GdScriptBridge
+public partial class HandBridge : GDScriptBridge
 {
-    public const string ClassName = "Hand";
-    PackedScene card_scene
+    public const string ClassName = "HandBridge";
+    public PackedScene card_scene
     {
         get => GdObject.Get("card_scene").As<PackedScene>();
         set => GdObject.Set("card_scene", value);
     }
 
-    Node card_container
+    public Node card_container
     {
         get => GdObject.Get("card_container").As<Node>();
         set => GdObject.Set("card_container", value);
     }
 
-    public Hand(GodotObject gdObject) : base(gdObject) {}
+    public HandBridge(GodotObject gdObject) : base(gdObject) {}
 }

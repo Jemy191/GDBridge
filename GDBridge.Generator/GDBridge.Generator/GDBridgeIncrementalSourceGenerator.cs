@@ -15,7 +15,7 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
             .Select((t, ct) => t.GetText(ct)?.ToString()!)
             .Where(t => t is not null)
             .Collect();
-
+        
         context.RegisterSourceOutput(scriptSources, Generate);
     }
 
@@ -35,20 +35,19 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
     static string GenerateClass(GdClass gdClass)
     {
         var source = new SourceWriter();
+        var className = $"{gdClass.ClassName}Bridge";
         source.WriteLine(
                 $$"""
                   using Godot;
-                  using GdBridge;
-
-                  namespace GDScript.Bridge;
+                  using GDBridge;
 
                   [GlobalClass]
-                  public partial class {{gdClass.ClassName}} : GdScriptBridge
+                  public partial class {{className}} : GDScriptBridge
                   """)
             .OpenBlock()
-            .WriteLine($"""public const string ClassName = "{gdClass.ClassName}";""")
+            .WriteLine($"""public const string ClassName = "{className}";""")
             .Variables(gdClass.Variables)
-            .WriteLine($"public {gdClass.ClassName}(GodotObject gdObject) : base(gdObject) {{}}")
+            .WriteLine($"public {className}(GodotObject gdObject) : base(gdObject) {{}}")
             .Functions(gdClass.Functions)
             .CloseBlock();
 
