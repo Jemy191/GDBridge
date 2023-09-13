@@ -1,4 +1,4 @@
-﻿//HintName: ConfigurableScene.cs
+﻿//HintName: ConfigurableSceneBridge.cs
 using Godot;
 using GDBridge;
 

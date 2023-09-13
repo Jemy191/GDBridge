@@ -1,4 +1,4 @@
-﻿//HintName: GameState.cs
+﻿//HintName: GameStateBridge.cs
 using Godot;
 using GDBridge;
 

@@ -1,4 +1,4 @@
-﻿//HintName: Arena.cs
+//HintName: ArenaBridge.cs
 using Godot;
 using GDBridge;
 

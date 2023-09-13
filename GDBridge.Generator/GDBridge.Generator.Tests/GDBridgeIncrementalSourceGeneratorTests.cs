@@ -2,6 +2,7 @@ using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Godot;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using VerifyTests;
@@ -47,9 +48,12 @@ public class GDBridgeIncrementalSourceGeneratorTests
 
     static GeneratorDriver GeneratorDriver(string path, string script)
     {
-        var compilation = CSharpCompilation.Create("Test");
+        var compilation = CSharpCompilation.Create("Test")
+            .AddSyntaxTrees(CSharpSyntaxTree.ParseText(File.ReadAllText("./TestProjectClasses/TestGDObject.cs")))
+            .AddReferences(MetadataReference.CreateFromFile(typeof(Node).Assembly.Location));// Will throw an exception if a breakpoint is hit when debugging
+        
         var generator = new GDBridgeIncrementalSourceGenerator();
-
+        
         var driver = CSharpGeneratorDriver.Create(generator)
             .AddAdditionalTexts(new[] { (AdditionalText)new ScriptAdditionalText(path, script) }.ToImmutableArray());
 

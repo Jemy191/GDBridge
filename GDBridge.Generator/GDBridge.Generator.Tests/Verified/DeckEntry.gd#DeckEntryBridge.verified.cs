@@ -1,4 +1,4 @@
-﻿//HintName: DeckEntry.cs
+﻿//HintName: DeckEntryBridge.cs
 using Godot;
 using GDBridge;
 
@@ -12,13 +12,13 @@ public partial class DeckEntryBridge : GDScriptBridge
         set => GdObject.Set("deckId", value);
     }
 
-    public ChooseDeck chooseDeck
+    public Variant chooseDeck
     {
-        get => GdObject.Get("chooseDeck").As<ChooseDeck>();
+        get => GdObject.Get("chooseDeck");
         set => GdObject.Set("chooseDeck", value);
     }
 
     public DeckEntryBridge(GodotObject gdObject) : base(gdObject) {}
 
-    public Variant setup(string deckName, long deckId, ChooseDeck chooseDeck) => GdObject.Call("setup", deckName, deckId, chooseDeck);
+    public Variant setup(string deckName, long deckId, Variant chooseDeck) => GdObject.Call("setup", deckName, deckId, chooseDeck);
 }

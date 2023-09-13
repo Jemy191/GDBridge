@@ -1,4 +1,4 @@
-﻿//HintName: ChooseDeck.cs
+﻿//HintName: ChooseDeckBridge.cs
 using Godot;
 using GDBridge;
 

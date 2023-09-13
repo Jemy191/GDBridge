@@ -1,4 +1,4 @@
-﻿//HintName: LocalPlayer.cs
+﻿//HintName: LocalPlayerBridge.cs
 using Godot;
 using GDBridge;
 

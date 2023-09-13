@@ -1,4 +1,4 @@
-﻿//HintName: Hand.cs
+﻿//HintName: HandBridge.cs
 using Godot;
 using GDBridge;
 

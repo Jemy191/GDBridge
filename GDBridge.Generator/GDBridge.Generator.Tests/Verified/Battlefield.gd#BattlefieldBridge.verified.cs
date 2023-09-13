@@ -1,4 +1,4 @@
-﻿//HintName: Battlefield.cs
+﻿//HintName: BattlefieldBridge.cs
 using Godot;
 using GDBridge;
 

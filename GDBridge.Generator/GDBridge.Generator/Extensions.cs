@@ -1,69 +1,12 @@
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
 using GDParser;
-using SourceGeneratorUtils;
 
 namespace GDBridge.Generator;
 
 static class Extensions
 {
-    public static SourceWriter Variables(this SourceWriter source, ReadOnlyCollection<GdVariable> variables)
+    public static string ToCSharpTypeString(this GdType type, ICollection<string> availableTypes) => (type.BuiltInType switch
     {
-        foreach (var variable in variables)
-        {
-            if (variable.Name.StartsWith("_"))
-                continue;
-
-            source.WriteLine($"public {variable.Type.ToCSharpTypeString()} {variable.Name}")
-                .OpenBlock()
-                .WriteLine(
-                    $"""
-                     get => GdObject.Get("{variable.Name}"){GetTypeCast(variable.Type)};
-                     set => GdObject.Set("{variable.Name}", value);
-                     """)
-                .CloseBlock()
-                .WriteEmptyLines(1);
-        }
-
-        return source;
-    }
-
-    public static SourceWriter Functions(this SourceWriter source, IEnumerable<GdFunction> functions)
-    {
-        foreach (var function in functions)
-        {
-            if (function.Name.StartsWith("_"))
-                continue;
-
-            source.WriteEmptyLines(1)
-                .WriteLine($"""public {function.ReturnType.ToCSharpTypeString()} {function.Name}({InParameters(function.Parameters)}) => GdObject.Call("{function.Name}"{CallParameters(function.Parameters)}){GetTypeCast(function.ReturnType)};""");
-        }
-
-        return source;
-    }
-    static string InParameters(IEnumerable<GdVariable> parameters) => string.Join(", ", parameters.Select(InParameter));
-    static string InParameter(GdVariable parameter) => $"{parameter.Type.ToCSharpTypeString()} {parameter.Name}";
-
-    static string CallParameters(IEnumerable<GdVariable> parameters)
-    {
-        var variables = parameters.ToList();
-        if (!variables.Any())
-            return "";
-        return $", {string.Join(", ", variables.Select(p => p.Name))}";
-    }
-    
-    static string GetTypeCast(GdType type)
-    {
-        if (type.BuiltInType is GdBuiltInType.Variant or GdBuiltInType.@void)
-            return "";
-        
-        return $".As<{type.ToCSharpTypeString()}>()";
-    }
-
-    static string ToCSharpTypeString(this GdType type) => type.BuiltInType switch
-    {
-        GdBuiltInType.@bool => "bool",
         GdBuiltInType.@int => "long",
         GdBuiltInType.@float => "double",
         GdBuiltInType.String => "string",
@@ -71,7 +14,7 @@ static class Extensions
         GdBuiltInType.Callable => "Godot.Callable",
         GdBuiltInType.Signal => "Godot.Signal",
         GdBuiltInType.Dictionary => "Godot.Collections.Dictionary",
-        GdBuiltInType.Array => GetGDArrayString(type),
+        GdBuiltInType.Array => GetGDArrayString(type, availableTypes),
         GdBuiltInType.PackedByteArray => "byte[]",
         GdBuiltInType.PackedInt32Array => "int[]",
         GdBuiltInType.PackedInt64Array => "long[]",
@@ -81,13 +24,15 @@ static class Extensions
         GdBuiltInType.PackedVector2Array => "Godot.Vector2[]",
         GdBuiltInType.PackedVector3Array => "Godot.Vector3[]",
         GdBuiltInType.PackedColorArray => "Godot.Color[]",
-        _ => type.TypeString ?? type.BuiltInType.ToString()
-    };
-
-    static string GetGDArrayString(GdType type)
+        _ when type.IsBuiltIn => type.BuiltInType.ToString(),
+        _ when availableTypes.Contains(type.TypeString!) => type.TypeString!,
+        _ => "Variant"
+    });
+    
+    static string GetGDArrayString(GdType type, ICollection<string> availableTypes)
     {
-        if (type is { IsTypedArray: true, ArrayType.IsBuiltIn: true })
-            return $"Godot.Collections.Array<{type.ArrayType.ToCSharpTypeString()}>";
+        if (type is { IsTypedArray: true, ArrayType.IsBuiltIn: true } || availableTypes.Contains(type.ArrayType?.TypeString!))
+            return $"Godot.Collections.Array<{type.ArrayType!.ToCSharpTypeString(availableTypes)}>";
         return "Godot.Collections.Array";
     }
 }

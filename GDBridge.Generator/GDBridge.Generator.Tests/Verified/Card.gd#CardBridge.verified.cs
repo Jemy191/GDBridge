@@ -1,4 +1,4 @@
-﻿//HintName: Card.cs
+﻿//HintName: CardBridge.cs
 using Godot;
 using GDBridge;
 
