@@ -46,6 +46,7 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
                   public partial class {{gdClass.ClassName}} : GdScriptBridge
                   """)
             .OpenBlock()
+            .WriteLine($"""public const string ClassName = "{gdClass.ClassName}";""")
             .Variables(gdClass.Variables)
             .WriteLine($"public {gdClass.ClassName}(GodotObject gdObject) : base(gdObject) {{}}")
             .Functions(gdClass.Functions)
