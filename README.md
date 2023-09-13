@@ -14,4 +14,6 @@ var myGDScript = new GdScriptBridgeFactory(this).ResolveNode<Arena>(arena);
 myGDScript.OnConfigure(42);
 ```
 
+The generator can be get from [here](https://www.nuget.org/packages/GDBridge.Generator)
+
 ### Feel free to ask for feature support, doing a feature Pull Request or if you have question.
