@@ -20,7 +20,7 @@ jobs:
       uses: actions/setup-dotnet@v3
 
     - name: Pack
-      run: dotnet pack GDBridge.Generator/GDBridge.Generator/GDBridge.Generator.csporj --configuration Release -p:PackageVersion=${{ env.Version }} --output .
+      run: dotnet pack GDBridge.Generator/GDBridge.Generator/GDBridge.Generator.csproj --configuration Release -p:PackageVersion=${{ env.Version }} --output .
     
     - name: Publish NuGet package
       run: dotnet nuget push ${{ env.PackageFile }} --api-key "${{ secrets.NUGET_APIKEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
