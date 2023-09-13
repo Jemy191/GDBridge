@@ -1,4 +1,4 @@
-extends Node
+class_name SceneLoader extends Node
 
 @export var menuScene: PackedScene
 @export var arenaScene: PackedScene

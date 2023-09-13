@@ -1,3 +1,5 @@
+class_name BuiltInType
+
 var var_variant : Variant
 var var_aabb : AABB
 var var_array : Array

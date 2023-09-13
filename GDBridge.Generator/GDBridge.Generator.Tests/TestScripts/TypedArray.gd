@@ -1,3 +1,4 @@
+class_name TypedArray 
 var array_test : Array[test]
 
 #builtIn

@@ -1,4 +1,4 @@
-extends Control
+class_name TestWeird extends Control
 
 @export var chooseDeck: ChooseDeck
 
