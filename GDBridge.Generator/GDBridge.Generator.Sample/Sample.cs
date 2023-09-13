@@ -11,11 +11,8 @@ namespace GDBridge.Generator.Sample
             var myGDScript = new GdScriptBridgeFactory(this).ResolveBridge<ArenaBridge>(arena);
 
             myGDScript.on_configure(42);
+
+            _ = new TestGDObject();
         }
     }
-}
-
-partial class ArenaBridge
-{
-    public void DoSomethingElse(int deckId) => on_configure(deckId);
 }

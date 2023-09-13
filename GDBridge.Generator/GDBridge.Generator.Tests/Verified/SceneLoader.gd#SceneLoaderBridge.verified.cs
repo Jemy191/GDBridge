@@ -1,32 +1,32 @@
 ﻿//HintName: SceneLoaderBridge.cs
-using Godot;
 using GDBridge;
+using Godot;
 
 [GlobalClass]
 public partial class SceneLoaderBridge : GDScriptBridge
 {
     public const string ClassName = "SceneLoaderBridge";
-    public PackedScene menuScene
+    public Godot.PackedScene menuScene
     {
-        get => GdObject.Get("menuScene").As<PackedScene>();
+        get => GdObject.Get("menuScene").As<Godot.PackedScene>();
         set => GdObject.Set("menuScene", value);
     }
 
-    public PackedScene arenaScene
+    public Godot.PackedScene arenaScene
     {
-        get => GdObject.Get("arenaScene").As<PackedScene>();
+        get => GdObject.Get("arenaScene").As<Godot.PackedScene>();
         set => GdObject.Set("arenaScene", value);
     }
 
-    public PackedScene deckbuilderScene
+    public Godot.PackedScene deckbuilderScene
     {
-        get => GdObject.Get("deckbuilderScene").As<PackedScene>();
+        get => GdObject.Get("deckbuilderScene").As<Godot.PackedScene>();
         set => GdObject.Set("deckbuilderScene", value);
     }
 
-    public Node current_scene
+    public Godot.Node current_scene
     {
-        get => GdObject.Get("current_scene").As<Node>();
+        get => GdObject.Get("current_scene").As<Godot.Node>();
         set => GdObject.Set("current_scene", value);
     }
 

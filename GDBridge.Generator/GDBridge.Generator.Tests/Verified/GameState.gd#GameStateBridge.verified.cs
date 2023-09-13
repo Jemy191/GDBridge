@@ -1,6 +1,6 @@
 ﻿//HintName: GameStateBridge.cs
-using Godot;
 using GDBridge;
+using Godot;
 
 [GlobalClass]
 public partial class GameStateBridge : GDScriptBridge

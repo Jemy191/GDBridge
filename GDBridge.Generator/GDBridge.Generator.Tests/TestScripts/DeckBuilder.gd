@@ -1,4 +1,4 @@
-extends ConfigurableScene
+class_name DeckBuilder extends ConfigurableScene
 
 var createNewDeck: bool = false
 

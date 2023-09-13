@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using GDParser;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Text;
 using SourceGeneratorUtils;
 
 namespace GDBridge.Generator;
@@ -27,18 +25,20 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
     {
         var godotAssembly = compilation.SourceModule.ReferencedAssemblySymbols
             .FirstOrDefault(e => e.Name == "GodotSharp");
-        
+
         var availableGodotTypes =
             godotAssembly?.GlobalNamespace
-            .GetNamespaceMembers().First(n => n.Name == "Godot")
-            .GetMembers()
-            .Where(m => m.IsType)
-            .Select(m => m.Name) ?? new List<string>();
+                .GetNamespaceMembers().First(n => n.Name == "Godot")
+                .GetMembers()
+                .Where(m => m.IsType)
+                .Select(m => new AvailableType(m.Name, "Godot")) ??
+            new List<AvailableType>();
 
         var availableTypes = compilation.Assembly.TypeNames
+            .Select(tn => new AvailableType(tn, string.Join(".", compilation.GetSymbolsWithName(tn).Single().ContainingNamespace.ConstituentNamespaces)))
             .Concat(availableGodotTypes)
             .ToList();
-        
+
         foreach (var script in scripts)
         {
             var gdClass = ClassParser.Parse(script);
@@ -47,25 +47,25 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
 
             var className = $"{gdClass.ClassName}Bridge";
             var source = GenerateClass(gdClass, className, availableTypes);
-            
+
             context.AddSource(className, source);
         }
     }
-    static string GenerateClass(GdClass gdClass, string className, ICollection<string> availableTypes)
+    static string GenerateClass(GdClass gdClass, string className, ICollection<AvailableType> availableTypes)
     {
         var source = new SourceWriter();
         var bridgeWriter = new BridgeWriter(availableTypes, source);
-        
+
         source.WriteLine(
                 $"""
-                  using Godot;
-                  using GDBridge;
+                 using GDBridge;
+                 using Godot;
 
-                  [GlobalClass]
-                  public partial class {className} : GDScriptBridge
-                  """)
+                 [GlobalClass]
+                 public partial class {className} : GDScriptBridge
+                 """)
             .OpenBlock()
-            .WriteLine($"""public const string ClassName = "{className}";"""); 
+            .WriteLine($"""public const string ClassName = "{className}";""");
         bridgeWriter.Variables(gdClass.Variables)
             .WriteLine($"public {className}(GodotObject gdObject) : base(gdObject) {{}}");
         bridgeWriter.Functions(gdClass.Functions)

@@ -1,6 +1,6 @@
 ﻿//HintName: LocalPlayerBridge.cs
-using Godot;
 using GDBridge;
+using Godot;
 
 [GlobalClass]
 public partial class LocalPlayerBridge : GDScriptBridge

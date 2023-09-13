@@ -1,6 +1,6 @@
 ﻿//HintName: CardPathBridge.cs
-using Godot;
 using GDBridge;
+using Godot;
 
 [GlobalClass]
 public partial class CardPathBridge : GDScriptBridge

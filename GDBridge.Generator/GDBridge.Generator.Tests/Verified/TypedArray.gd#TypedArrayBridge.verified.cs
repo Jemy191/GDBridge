@@ -1,6 +1,6 @@
 ﻿//HintName: TypedArrayBridge.cs
-using Godot;
 using GDBridge;
+using Godot;
 
 [GlobalClass]
 public partial class TypedArrayBridge : GDScriptBridge

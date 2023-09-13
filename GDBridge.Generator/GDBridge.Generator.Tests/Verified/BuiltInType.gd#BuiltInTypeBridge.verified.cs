@@ -1,6 +1,6 @@
 ﻿//HintName: BuiltInTypeBridge.cs
-using Godot;
 using GDBridge;
+using Godot;
 
 [GlobalClass]
 public partial class BuiltInTypeBridge : GDScriptBridge

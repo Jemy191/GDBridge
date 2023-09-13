@@ -1,14 +1,14 @@
 ﻿//HintName: MenuBridge.cs
-using Godot;
 using GDBridge;
+using Godot;
 
 [GlobalClass]
 public partial class MenuBridge : GDScriptBridge
 {
     public const string ClassName = "MenuBridge";
-    public Variant chooseDeck
+    public Godot.Variant chooseDeck
     {
-        get => GdObject.Get("chooseDeck");
+        get => GdObject.Get("chooseDeck").As<Godot.Variant>();
         set => GdObject.Set("chooseDeck", value);
     }
 

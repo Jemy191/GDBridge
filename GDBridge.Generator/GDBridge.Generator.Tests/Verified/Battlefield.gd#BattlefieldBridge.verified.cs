@@ -1,6 +1,6 @@
 ﻿//HintName: BattlefieldBridge.cs
-using Godot;
 using GDBridge;
+using Godot;
 
 [GlobalClass]
 public partial class BattlefieldBridge : GDScriptBridge

@@ -1,6 +1,6 @@
-//HintName: ArenaBridge.cs
-using Godot;
+﻿//HintName: ArenaBridge.cs
 using GDBridge;
+using Godot;
 
 [GlobalClass]
 public partial class ArenaBridge : GDScriptBridge

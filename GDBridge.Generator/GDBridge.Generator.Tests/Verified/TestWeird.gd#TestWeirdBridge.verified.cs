@@ -1,14 +1,14 @@
 ﻿//HintName: TestWeirdBridge.cs
-using Godot;
 using GDBridge;
+using Godot;
 
 [GlobalClass]
 public partial class TestWeirdBridge : GDScriptBridge
 {
     public const string ClassName = "TestWeirdBridge";
-    public Variant chooseDeck
+    public Godot.Variant chooseDeck
     {
-        get => GdObject.Get("chooseDeck");
+        get => GdObject.Get("chooseDeck").As<Godot.Variant>();
         set => GdObject.Set("chooseDeck", value);
     }
 

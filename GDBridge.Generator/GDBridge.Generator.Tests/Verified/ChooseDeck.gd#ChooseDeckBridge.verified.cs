@@ -1,20 +1,20 @@
 ﻿//HintName: ChooseDeckBridge.cs
-using Godot;
 using GDBridge;
+using Godot;
 
 [GlobalClass]
 public partial class ChooseDeckBridge : GDScriptBridge
 {
     public const string ClassName = "ChooseDeckBridge";
-    public PackedScene deckEntryScene
+    public Godot.PackedScene deckEntryScene
     {
-        get => GdObject.Get("deckEntryScene").As<PackedScene>();
+        get => GdObject.Get("deckEntryScene").As<Godot.PackedScene>();
         set => GdObject.Set("deckEntryScene", value);
     }
 
-    public PackedScene deckBuilderScene
+    public Godot.PackedScene deckBuilderScene
     {
-        get => GdObject.Get("deckBuilderScene").As<PackedScene>();
+        get => GdObject.Get("deckBuilderScene").As<Godot.PackedScene>();
         set => GdObject.Set("deckBuilderScene", value);
     }
 

@@ -8,9 +8,9 @@ namespace GDBridge.Generator;
 
 class BridgeWriter
 {
-    readonly ICollection<string> availableTypes;
+    readonly ICollection<AvailableType> availableTypes;
     readonly SourceWriter source;
-    public BridgeWriter(ICollection<string> availableTypes, SourceWriter source)
+    public BridgeWriter(ICollection<AvailableType> availableTypes, SourceWriter source)
     {
         this.availableTypes = availableTypes;
         this.source = source;
