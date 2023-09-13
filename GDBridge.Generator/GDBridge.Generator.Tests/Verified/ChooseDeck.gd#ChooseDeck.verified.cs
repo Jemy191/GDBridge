@@ -7,6 +7,7 @@ namespace GDScript.Bridge;
 [GlobalClass]
 public partial class ChooseDeck : GdScriptBridge
 {
+    public const string ClassName = "ChooseDeck";
     PackedScene deckEntryScene
     {
         get => GdObject.Get("deckEntryScene").As<PackedScene>();

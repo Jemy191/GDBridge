@@ -7,6 +7,7 @@ namespace GDScript.Bridge;
 [GlobalClass]
 public partial class Hand : GdScriptBridge
 {
+    public const string ClassName = "Hand";
     PackedScene card_scene
     {
         get => GdObject.Get("card_scene").As<PackedScene>();

@@ -7,6 +7,7 @@ namespace GDScript.Bridge;
 [GlobalClass]
 public partial class Card : GdScriptBridge
 {
+    public const string ClassName = "Card";
     Label name_label
     {
         get => GdObject.Get("name_label").As<Label>();

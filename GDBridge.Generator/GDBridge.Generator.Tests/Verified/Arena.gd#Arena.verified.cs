@@ -7,6 +7,7 @@ namespace GDScript.Bridge;
 [GlobalClass]
 public partial class Arena : GdScriptBridge
 {
+    public const string ClassName = "Arena";
     NodePath game_startup
     {
         get => GdObject.Get("game_startup").As<NodePath>();

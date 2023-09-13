@@ -7,6 +7,7 @@ namespace GDScript.Bridge;
 [GlobalClass]
 public partial class CardPath : GdScriptBridge
 {
+    public const string ClassName = "CardPath";
     long width
     {
         get => GdObject.Get("width").As<long>();

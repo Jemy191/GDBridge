@@ -7,6 +7,7 @@ namespace GDScript.Bridge;
 [GlobalClass]
 public partial class DeckEntry : GdScriptBridge
 {
+    public const string ClassName = "DeckEntry";
     long deckId
     {
         get => GdObject.Get("deckId").As<long>();
