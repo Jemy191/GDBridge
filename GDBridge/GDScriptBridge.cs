@@ -2,7 +2,7 @@ using Godot;
 
 namespace GDBridge;
 
-public abstract class GDScriptBridge
+public abstract class GDScriptBridge : GodotObject
 {
     protected readonly GodotObject GdObject;
 
