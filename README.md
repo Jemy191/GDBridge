@@ -31,5 +31,13 @@ partial class ArenaBridge
     public void DoSomethingElse(int deckId) => on_configure(deckId);
 }
 ```
+## Feature
+- [X] Call GDScript from C#
+- [X] Use your C# class in the generated code(Even the bridge themselve)
+- [X] Respect the _private method and field
+- [ ] Signal support
+- [ ] GodotObject support
+And more to come.
+
 ### Feel free to ask for feature or question.
 ### Pull Request are welcome.
