@@ -48,10 +48,16 @@ public class GDBridgeIncrementalSourceGeneratorTests
 
     static GeneratorDriver GeneratorDriver(string path, string script)
     {
+        var testCodePaths = Directory.GetFiles("./TestProjectClasses")
+            .Where(f => f.EndsWith(".cs"))
+            .ToList();
         var compilation = CSharpCompilation.Create("Test")
-            .AddSyntaxTrees(CSharpSyntaxTree.ParseText(File.ReadAllText("./TestProjectClasses/TestGDObject.cs")))
             .AddReferences(MetadataReference.CreateFromFile(typeof(Node).Assembly.Location));// Will throw an exception if a breakpoint is hit when debugging
-        
+
+        foreach (var testCodePath in testCodePaths)
+        {
+            compilation = compilation.AddSyntaxTrees(CSharpSyntaxTree.ParseText(File.ReadAllText(testCodePath)));
+        }
         var generator = new GDBridgeIncrementalSourceGenerator();
         
         var driver = CSharpGeneratorDriver.Create(generator)

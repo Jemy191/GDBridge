@@ -33,9 +33,11 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
                 .Where(m => m.IsType)
                 .Select(m => new AvailableType(m.Name, "Godot")) ??
             new List<AvailableType>();
-
+        
         var availableTypes = compilation.Assembly.TypeNames
-            .Select(tn => new AvailableType(tn, string.Join(".", compilation.GetSymbolsWithName(tn).Single().ContainingNamespace.ConstituentNamespaces)))
+            .Select(tn => new AvailableType(tn, ResolveNamespace(compilation.GetSymbolsWithName(tn)
+                .Single().ContainingNamespace)))
+            .ToList()
             .Concat(availableGodotTypes)
             .ToList();
 
@@ -51,6 +53,21 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
             context.AddSource(className, source);
         }
     }
+
+    static string ResolveNamespace(INamespaceSymbol? symbol, string childNamespace = "")
+    {
+        while (symbol is { IsGlobalNamespace: false })
+        {
+            if (childNamespace == "")
+                childNamespace = symbol.Name;
+            else
+                childNamespace = $"{symbol.Name}.{childNamespace}";
+
+            symbol = symbol.ContainingNamespace;
+        }
+        return childNamespace;
+    }
+
     static string GenerateClass(GdClass gdClass, string className, ICollection<AvailableType> availableTypes)
     {
         var source = new SourceWriter();

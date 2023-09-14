@@ -33,6 +33,9 @@ static class Extensions
         var csharpType = availableTypes.FirstOrDefault(t => t.Name == type.TypeString!);
         if(csharpType is null)
             return "Godot.Variant";
+
+        if (string.IsNullOrWhiteSpace(csharpType.Namespace))
+            return csharpType.Name;
         
         return $"{csharpType.Namespace}.{csharpType.Name}";
     }

@@ -1,3 +1,4 @@
+using CardGame.Core.Data;
 using Godot;
 
 namespace GDBridge.Generator.Sample
@@ -13,6 +14,7 @@ namespace GDBridge.Generator.Sample
             myGDScript.on_configure(42);
 
             _ = new TestGDObject();
+            _ = new DeckData();
         }
     }
 }

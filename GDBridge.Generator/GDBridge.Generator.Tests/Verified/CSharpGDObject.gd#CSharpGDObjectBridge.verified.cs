@@ -6,13 +6,13 @@ using Godot;
 public partial class CSharpGDObjectBridge : GDScriptBridge
 {
     public const string GDClassName = "CSharpGDObject";
-    public GDBridge.Generator.Tests.TestProjectClasses.TestGDObject test_object
+    public TestGDObject test_object
     {
-        get => GdObject.Get("test_object").As<GDBridge.Generator.Tests.TestProjectClasses.TestGDObject>();
+        get => GdObject.Get("test_object").As<TestGDObject>();
         set => GdObject.Set("test_object", value);
     }
 
     public CSharpGDObjectBridge(GodotObject gdObject) : base(gdObject) {}
 
-    public void on_configure(GDBridge.Generator.Tests.TestProjectClasses.TestGDObject test_object) => GdObject.Call("on_configure", test_object);
+    public void on_configure(TestGDObject test_object) => GdObject.Call("on_configure", test_object);
 }
