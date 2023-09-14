@@ -1,7 +1,7 @@
 [![Test](https://github.com/TheJemy191/GDBridge/actions/workflows/Test.yml/badge.svg)](https://github.com/TheJemy191/GDBridge/actions/workflows/Test.yml)
 # GDBridge
 ## ⚠In active developement
-Something can change but not that much.
+Some thing can change but not that much.
 
 Simple package to simplify C# -> GDScript interoperability.
 It comes in two part the bridge code and the source generator.
