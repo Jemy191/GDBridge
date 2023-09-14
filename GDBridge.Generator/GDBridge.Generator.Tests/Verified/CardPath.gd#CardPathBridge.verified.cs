@@ -5,7 +5,7 @@ using Godot;
 [GlobalClass]
 public partial class CardPathBridge : GDScriptBridge
 {
-    public const string ClassName = "CardPathBridge";
+    public const string GDClassName = "CardPath";
     public long width
     {
         get => GdObject.Get("width").As<long>();

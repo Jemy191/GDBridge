@@ -5,7 +5,7 @@ using Godot;
 [GlobalClass]
 public partial class HandBridge : GDScriptBridge
 {
-    public const string ClassName = "HandBridge";
+    public const string GDClassName = "Hand";
     public Godot.PackedScene card_scene
     {
         get => GdObject.Get("card_scene").As<Godot.PackedScene>();

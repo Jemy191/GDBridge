@@ -5,7 +5,7 @@ using Godot;
 [GlobalClass]
 public partial class ArenaBridge : GDScriptBridge
 {
-    public const string ClassName = "ArenaBridge";
+    public const string GDClassName = "Arena";
     public NodePath game_startup
     {
         get => GdObject.Get("game_startup").As<NodePath>();

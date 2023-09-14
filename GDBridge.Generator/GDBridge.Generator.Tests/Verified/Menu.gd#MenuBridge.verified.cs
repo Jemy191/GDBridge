@@ -5,7 +5,7 @@ using Godot;
 [GlobalClass]
 public partial class MenuBridge : GDScriptBridge
 {
-    public const string ClassName = "MenuBridge";
+    public const string GDClassName = "Menu";
     public Godot.Variant chooseDeck
     {
         get => GdObject.Get("chooseDeck").As<Godot.Variant>();

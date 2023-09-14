@@ -5,7 +5,7 @@ using Godot;
 [GlobalClass]
 public partial class TestNonBuiltinGodotTypeBridge : GDScriptBridge
 {
-    public const string ClassName = "TestNonBuiltinGodotTypeBridge";
+    public const string GDClassName = "TestNonBuiltinGodotType";
     public Godot.Node2D node
     {
         get => GdObject.Get("node").As<Godot.Node2D>();

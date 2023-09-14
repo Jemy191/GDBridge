@@ -4,7 +4,7 @@ namespace GDBridge.Generator.Sample
 {
     class Sample : Node
     {
-        [Export(PropertyHint.NodePathValidTypes, ArenaBridge.ClassName)] NodePath arena = null!;
+        [Export(PropertyHint.NodePathValidTypes, ArenaBridge.GDClassName)] NodePath arena = null!;
         
         void Init()
         {

@@ -65,7 +65,7 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
                  public partial class {className} : GDScriptBridge
                  """)
             .OpenBlock()
-            .WriteLine($"""public const string ClassName = "{className}";""");
+            .WriteLine($"""public const string GDClassName = "{gdClass.ClassName}";""");
         bridgeWriter.Variables(gdClass.Variables)
             .WriteLine($"public {className}(GodotObject gdObject) : base(gdObject) {{}}");
         bridgeWriter.Functions(gdClass.Functions)

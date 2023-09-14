@@ -5,7 +5,7 @@ using Godot;
 [GlobalClass]
 public partial class TypedArrayBridge : GDScriptBridge
 {
-    public const string ClassName = "TypedArrayBridge";
+    public const string GDClassName = "TypedArray";
     public Godot.Collections.Array array_test
     {
         get => GdObject.Get("array_test").As<Godot.Collections.Array>();

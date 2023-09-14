@@ -5,7 +5,7 @@ using Godot;
 [GlobalClass]
 public partial class DeckEntryBridge : GDScriptBridge
 {
-    public const string ClassName = "DeckEntryBridge";
+    public const string GDClassName = "DeckEntry";
     public long deckId
     {
         get => GdObject.Get("deckId").As<long>();

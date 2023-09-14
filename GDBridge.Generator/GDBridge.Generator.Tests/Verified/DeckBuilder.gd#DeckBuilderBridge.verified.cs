@@ -5,7 +5,7 @@ using Godot;
 [GlobalClass]
 public partial class DeckBuilderBridge : GDScriptBridge
 {
-    public const string ClassName = "DeckBuilderBridge";
+    public const string GDClassName = "DeckBuilder";
     public bool createNewDeck
     {
         get => GdObject.Get("createNewDeck").As<bool>();

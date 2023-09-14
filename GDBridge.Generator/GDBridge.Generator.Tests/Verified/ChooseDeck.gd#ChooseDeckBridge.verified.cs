@@ -5,7 +5,7 @@ using Godot;
 [GlobalClass]
 public partial class ChooseDeckBridge : GDScriptBridge
 {
-    public const string ClassName = "ChooseDeckBridge";
+    public const string GDClassName = "ChooseDeck";
     public Godot.PackedScene deckEntryScene
     {
         get => GdObject.Get("deckEntryScene").As<Godot.PackedScene>();

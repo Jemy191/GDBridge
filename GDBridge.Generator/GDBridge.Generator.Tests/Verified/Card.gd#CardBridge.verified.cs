@@ -5,7 +5,7 @@ using Godot;
 [GlobalClass]
 public partial class CardBridge : GDScriptBridge
 {
-    public const string ClassName = "CardBridge";
+    public const string GDClassName = "Card";
     public Godot.Label name_label
     {
         get => GdObject.Get("name_label").As<Godot.Label>();

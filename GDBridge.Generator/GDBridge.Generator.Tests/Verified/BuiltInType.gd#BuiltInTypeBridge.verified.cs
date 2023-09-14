@@ -5,7 +5,7 @@ using Godot;
 [GlobalClass]
 public partial class BuiltInTypeBridge : GDScriptBridge
 {
-    public const string ClassName = "BuiltInTypeBridge";
+    public const string GDClassName = "BuiltInType";
     public Variant var_variant
     {
         get => GdObject.Get("var_variant");

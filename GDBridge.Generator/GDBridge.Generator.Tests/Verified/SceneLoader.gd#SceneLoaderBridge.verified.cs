@@ -5,7 +5,7 @@ using Godot;
 [GlobalClass]
 public partial class SceneLoaderBridge : GDScriptBridge
 {
-    public const string ClassName = "SceneLoaderBridge";
+    public const string GDClassName = "SceneLoader";
     public Godot.PackedScene menuScene
     {
         get => GdObject.Get("menuScene").As<Godot.PackedScene>();

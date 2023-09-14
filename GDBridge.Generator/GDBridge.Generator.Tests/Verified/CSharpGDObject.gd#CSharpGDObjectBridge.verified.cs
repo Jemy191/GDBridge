@@ -5,7 +5,7 @@ using Godot;
 [GlobalClass]
 public partial class CSharpGDObjectBridge : GDScriptBridge
 {
-    public const string ClassName = "CSharpGDObjectBridge";
+    public const string GDClassName = "CSharpGDObject";
     public GDBridge.Generator.Tests.TestProjectClasses.TestGDObject test_object
     {
         get => GdObject.Get("test_object").As<GDBridge.Generator.Tests.TestProjectClasses.TestGDObject>();

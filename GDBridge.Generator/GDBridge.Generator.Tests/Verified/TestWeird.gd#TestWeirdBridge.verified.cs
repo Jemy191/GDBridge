@@ -5,7 +5,7 @@ using Godot;
 [GlobalClass]
 public partial class TestWeirdBridge : GDScriptBridge
 {
-    public const string ClassName = "TestWeirdBridge";
+    public const string GDClassName = "TestWeird";
     public Godot.Variant chooseDeck
     {
         get => GdObject.Get("chooseDeck").As<Godot.Variant>();
