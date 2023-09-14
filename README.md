@@ -1,5 +1,7 @@
 [![Test](https://github.com/TheJemy191/GDBridge/actions/workflows/Test.yml/badge.svg)](https://github.com/TheJemy191/GDBridge/actions/workflows/Test.yml)
 # GDBridge
+## ⚠In active developement
+Something can change but not that much.
 
 Simple package to simplify C# -> GDScript interoperability.
 It comes in two part the bridge code and the source generator.
@@ -28,4 +30,5 @@ partial class ArenaBridge
 
 The generator can be gotten from [here](https://www.nuget.org/packages/GDBridge.Generator)
 
-### Feel free to ask for feature support, doing a feature Pull Request or if you have question.
+### Feel free to ask for feature or question.
+### Pull Request are welcome.
