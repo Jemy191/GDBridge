@@ -26,6 +26,15 @@ Make sure to instal both GDBridge and GDBridge.Generator.
 Only script with class_name will be bridged.  
 Variable and function starting with _ are not expose in the bridge by default.
 
+Add this to your .csproj:
+```xml
+  <ItemGroup>
+    <AdditionalFiles Include="**/*.gd"/>
+    <!-- Add this if you want to exclude GDScript in addons -->
+    <!--<AdditionalFiles Remove="addons\**"/>-->
+  </ItemGroup>
+```
+
 ```csharp
 using GdBridge;
 
