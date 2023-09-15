@@ -11,12 +11,13 @@ It aims to reduce or remove the need to use string and untyped way of communicat
 #### Get it here -> https://www.nuget.org/packages/GDBridge and here -> https://www.nuget.org/packages/GDBridge.Generator
 
 ## Feature
-- [X] Call GDScript from C#
-- [X] Use your C# class in the generated code(Even the bridge themselve)
-- [X] Respect the _private method and field
-- [X] Configurable
-- [ ] Signal support
-- [ ] GodotObject support
+- [X] Call GDScript from C#.
+- [X] Use your C# class in the generated code(Even the bridge themselve).
+- [X] Respect the _private method and field.
+- [X] Configurable.
+- [ ] Use root namespace as default.
+- [ ] Signal support.
+- [ ] GodotObject support.
 And more to come.
 
 ### How to use(See [Sample](https://github.com/TheJemy191/GDBridge/blob/main/GDBridge.Generator/GDBridge.Generator.Sample/Test.cs))
