@@ -39,38 +39,13 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
         </PackageReference>
     </ItemGroup>
-
-
-    <!--To add non generator see this: https://github.com/dotnet/roslyn/discussions/47517-->
+    
+    <!--To add non generator see this: https://www.thinktecture.com/en/net/roslyn-source-generators-using-3rd-party-libraries/-->
+    <!--More info here https://github.com/dotnet/roslyn/discussions/47517-->
     <ItemGroup>
         <PackageReference Include="GDParser" Version="0.7.0" GeneratePathProperty="true" IncludeAssets="all" />
-
-        <TargetPathWithTargetPlatformMoniker Include="$(PKGGDParser)\lib\netstandard2.0\GDParser.dll" IncludeRuntimeDependency="false"/>
-    </ItemGroup>
-
-    <PropertyGroup>
-        <GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
-    </PropertyGroup>
-
-    <Target Name="GetDependencyTargetPaths">
-        <ItemGroup>
-            <TargetPathWithTargetPlatformMoniker Include="$(PKGGDParser)\lib\netstandard2.0\GDParser.dll" IncludeRuntimeDependency="false"/>
-        </ItemGroup>
-    </Target>
-
-    <ItemGroup>
-        <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
-        <None Include="$(PKGGDParser)\lib\netstandard2.0\GDParser.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
-    </ItemGroup>
-
-    
-    
-    
-
-    <ItemGroup>
         <PackageReference Include="SourceGeneratorUtils" Version="1.4.3" GeneratePathProperty="true" IncludeAssets="all"/>
-
-        <TargetPathWithTargetPlatformMoniker Include="$(PKGSourceGeneratorUtils)\lib\netstandard2.0\SourceGeneratorUtils.dll" IncludeRuntimeDependency="false"/>
+        <PackageReference Include="System.Text.Json" Version="7.0.3" GeneratePathProperty="true" IncludeAssets="all"/>
     </ItemGroup>
 
     <PropertyGroup>
@@ -79,12 +54,18 @@
 
     <Target Name="GetDependencyTargetPaths">
         <ItemGroup>
-            <TargetPathWithTargetPlatformMoniker Include="$(PKGSourceGeneratorUtils)\lib\netstandard2.0\SourceGeneratorUtils.dll" IncludeRuntimeDependency="false"/>
+            <TargetPathWithTargetPlatformMoniker Include="$(PKGGDParser)\lib\netstandard2.0\*.dll" IncludeRuntimeDependency="false"/>
+            <TargetPathWithTargetPlatformMoniker Include="$(PKGSourceGeneratorUtils)\lib\netstandard2.0\*.dll" IncludeRuntimeDependency="false"/>
+            <TargetPathWithTargetPlatformMoniker Include="$(PKGSystem_Text_Json)\lib\netstandard2.0\*.dll" IncludeRuntimeDependency="false"/>
         </ItemGroup>
     </Target>
 
     <ItemGroup>
         <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
+        
+        <None Include="$(PKGGDParser)\lib\netstandard2.0\GDParser.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
         <None Include="$(PKGSourceGeneratorUtils)\lib\netstandard2.0\SourceGeneratorUtils.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
+        <None Include="$(PKGSystem_Text_Json)\lib\netstandard2.0\System.Text.Json.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false"/>
     </ItemGroup>
+    
 </Project>

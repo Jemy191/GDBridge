@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using GDParser;
 using SourceGeneratorUtils;
 
@@ -10,10 +11,12 @@ class BridgeWriter
 {
     readonly ICollection<AvailableType> availableTypes;
     readonly SourceWriter source;
-    public BridgeWriter(ICollection<AvailableType> availableTypes, SourceWriter source)
+    readonly Configuration configuration;
+    public BridgeWriter(ICollection<AvailableType> availableTypes, SourceWriter source, Configuration configuration)
     {
         this.availableTypes = availableTypes;
         this.source = source;
+        this.configuration = configuration;
     }
 
     public SourceWriter Variables(ReadOnlyCollection<GdVariable> variables)
@@ -23,7 +26,7 @@ class BridgeWriter
             if (variable.Name.StartsWith("_"))
                 continue;
 
-            source.WriteLine($"public {variable.Type.ToCSharpTypeString(availableTypes)} {variable.Name}")
+            source.WriteLine($"public {variable.Type.ToCSharpTypeString(availableTypes)} {Pascalize(variable.Name)}")
                 .OpenBlock()
                 .WriteLine(
                     $"""
@@ -43,22 +46,23 @@ class BridgeWriter
         {
             if (function.Name.StartsWith("_"))
                 continue;
-
+            
             source.WriteEmptyLines(1)
-                .WriteLine($"""public {function.ReturnType.ToCSharpTypeString(availableTypes)} {function.Name}({InParameters(function.Parameters)}) => GdObject.Call("{function.Name}"{CallParameters(function.Parameters)}){GetTypeCast(function.ReturnType)};""");
+                .WriteLine($"""public {function.ReturnType.ToCSharpTypeString(availableTypes)} {Pascalize(function.Name)}({InParameters(function.Parameters)}) => GdObject.Call("{function.Name}"{CallParameters(function.Parameters)}){GetTypeCast(function.ReturnType)};""");
         }
 
         return source;
     }
     string InParameters(IEnumerable<GdVariable> parameters) => string.Join(", ", parameters.Select(InParameter));
-    string InParameter(GdVariable parameter) => $"{parameter.Type.ToCSharpTypeString(availableTypes)} {parameter.Name}";
+    string InParameter(GdVariable parameter) => $"{parameter.Type.ToCSharpTypeString(availableTypes)} {Pascalize(parameter.Name)}";
+    string Pascalize(string text) => configuration.UsePascalCase ? Regex.Replace(text, "(?:^|_| +)(.)", match => match.Groups[1].Value.ToUpper()) : text;
 
     string CallParameters(IEnumerable<GdVariable> parameters)
     {
-        var variables = parameters.ToList();
-        if (!variables.Any())
+        parameters = parameters.ToList();
+        if (!parameters.Any())
             return "";
-        return $", {string.Join(", ", variables.Select(p => p.Name))}";
+        return $", {string.Join(", ", parameters.Select(p => Pascalize(p.Name)))}";
     }
     
     string GetTypeCast(GdType type)

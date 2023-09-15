@@ -28,7 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Verified\"/>
+        <Folder Include="Verified"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -39,6 +39,7 @@
         <AdditionalFiles Include="TestProjectClasses/**/*.cs">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </AdditionalFiles>
+        <Compile Remove="Verified\AllNoConfig\**" />
     </ItemGroup>
 
     <ItemGroup>

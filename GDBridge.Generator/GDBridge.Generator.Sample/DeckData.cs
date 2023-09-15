@@ -1,6 +1,6 @@
 using Godot;
 
-namespace CardGame.Core.Data;
+namespace GDBridge.Generator.Sample;
 
 [GlobalClass]
 public partial class DeckData : GodotObject
