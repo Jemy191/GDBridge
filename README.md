@@ -54,4 +54,5 @@ Create the `GDBridgeConfiguration.json` in the root directory and add this to it
 The schema is here: [Configuration.cs](GDBridge.Generator/GDBridge.Generator/Configuration.cs)
 
 #### Feel free to ask for feature or question.
+[What do you want?](https://github.com/TheJemy191/GDBridge/discussions/1)
 #### Pull Request are welcome.
