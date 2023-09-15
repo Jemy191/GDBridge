@@ -10,6 +10,15 @@ It aims to reduce or remove the need to use string and untyped way of communicat
 
 #### Get it here -> https://www.nuget.org/packages/GDBridge and here -> https://www.nuget.org/packages/GDBridge.Generator
 
+## Feature
+- [X] Call GDScript from C#
+- [X] Use your C# class in the generated code(Even the bridge themselve)
+- [X] Respect the _private method and field
+- [X] Configurable
+- [ ] Signal support
+- [ ] GodotObject support
+And more to come.
+
 ### How to use(See [Sample](https://github.com/TheJemy191/GDBridge/blob/main/GDBridge.Generator/GDBridge.Generator.Sample/Test.cs))
 
 Make sure to instal both GDBridge and GDBridge.Generator
@@ -31,13 +40,15 @@ partial class ArenaBridge
     public void DoSomethingElse(int deckId) => on_configure(deckId);
 }
 ```
-## Feature
-- [X] Call GDScript from C#
-- [X] Use your C# class in the generated code(Even the bridge themselve)
-- [X] Respect the _private method and field
-- [ ] Signal support
-- [ ] GodotObject support
-And more to come.
 
-### Feel free to ask for feature or question.
-### Pull Request are welcome.
+### How to configure(Optional)
+Create the `GDBridgeConfiguration.json` in the root directory and add this to it:
+```json
+{
+    "UsePascalCase": true
+}
+```
+The schema is here: [Configuration.cs](GDBridge.Generator/GDBridge.Generator/Configuration.cs)
+
+#### Feel free to ask for feature or question.
+#### Pull Request are welcome.
