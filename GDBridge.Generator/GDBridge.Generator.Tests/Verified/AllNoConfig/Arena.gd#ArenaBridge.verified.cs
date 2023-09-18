@@ -6,9 +6,9 @@ using Godot;
 public partial class ArenaBridge : GDScriptBridge
 {
     public const string GDClassName = "Arena";
-    public NodePath game_startup
+    public Godot.NodePath game_startup
     {
-        get => GdObject.Get("game_startup").As<NodePath>();
+        get => GdObject.Get("game_startup").As<Godot.NodePath>();
         set => GdObject.Set("game_startup", value);
     }
 

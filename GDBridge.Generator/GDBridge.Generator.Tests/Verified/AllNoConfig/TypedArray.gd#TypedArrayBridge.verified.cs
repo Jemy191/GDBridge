@@ -18,15 +18,15 @@ public partial class TypedArrayBridge : GDScriptBridge
         set => GdObject.Set("array_variant", value);
     }
 
-    public Godot.Collections.Array<AABB> array_aabb
+    public Godot.Collections.Array<Godot.Aabb> array_aabb
     {
-        get => GdObject.Get("array_aabb").As<Godot.Collections.Array<AABB>>();
+        get => GdObject.Get("array_aabb").As<Godot.Collections.Array<Godot.Aabb>>();
         set => GdObject.Set("array_aabb", value);
     }
 
-    public Godot.Collections.Array<Basis> array_basis
+    public Godot.Collections.Array<Godot.Basis> array_basis
     {
-        get => GdObject.Get("array_basis").As<Godot.Collections.Array<Basis>>();
+        get => GdObject.Get("array_basis").As<Godot.Collections.Array<Godot.Basis>>();
         set => GdObject.Set("array_basis", value);
     }
 
@@ -42,9 +42,9 @@ public partial class TypedArrayBridge : GDScriptBridge
         set => GdObject.Set("array_callable", value);
     }
 
-    public Godot.Collections.Array<Color> array_color
+    public Godot.Collections.Array<Godot.Color> array_color
     {
-        get => GdObject.Get("array_color").As<Godot.Collections.Array<Color>>();
+        get => GdObject.Get("array_color").As<Godot.Collections.Array<Godot.Color>>();
         set => GdObject.Set("array_color", value);
     }
 
@@ -66,9 +66,9 @@ public partial class TypedArrayBridge : GDScriptBridge
         set => GdObject.Set("array_int", value);
     }
 
-    public Godot.Collections.Array<NodePath> array_nodepath
+    public Godot.Collections.Array<Godot.NodePath> array_nodepath
     {
-        get => GdObject.Get("array_nodepath").As<Godot.Collections.Array<NodePath>>();
+        get => GdObject.Get("array_nodepath").As<Godot.Collections.Array<Godot.NodePath>>();
         set => GdObject.Set("array_nodepath", value);
     }
 
@@ -132,39 +132,39 @@ public partial class TypedArrayBridge : GDScriptBridge
         set => GdObject.Set("array_packedvector3array", value);
     }
 
-    public Godot.Collections.Array<Plane> array_plane
+    public Godot.Collections.Array<Godot.Plane> array_plane
     {
-        get => GdObject.Get("array_plane").As<Godot.Collections.Array<Plane>>();
+        get => GdObject.Get("array_plane").As<Godot.Collections.Array<Godot.Plane>>();
         set => GdObject.Set("array_plane", value);
     }
 
-    public Godot.Collections.Array<Projection> array_projection
+    public Godot.Collections.Array<Godot.Projection> array_projection
     {
-        get => GdObject.Get("array_projection").As<Godot.Collections.Array<Projection>>();
+        get => GdObject.Get("array_projection").As<Godot.Collections.Array<Godot.Projection>>();
         set => GdObject.Set("array_projection", value);
     }
 
-    public Godot.Collections.Array<Quaternion> array_quaternion
+    public Godot.Collections.Array<Godot.Quaternion> array_quaternion
     {
-        get => GdObject.Get("array_quaternion").As<Godot.Collections.Array<Quaternion>>();
+        get => GdObject.Get("array_quaternion").As<Godot.Collections.Array<Godot.Quaternion>>();
         set => GdObject.Set("array_quaternion", value);
     }
 
-    public Godot.Collections.Array<Rect2> array_rect2
+    public Godot.Collections.Array<Godot.Rect2> array_rect2
     {
-        get => GdObject.Get("array_rect2").As<Godot.Collections.Array<Rect2>>();
+        get => GdObject.Get("array_rect2").As<Godot.Collections.Array<Godot.Rect2>>();
         set => GdObject.Set("array_rect2", value);
     }
 
-    public Godot.Collections.Array<Rect2i> array_rect2i
+    public Godot.Collections.Array<Godot.Rect2I> array_rect2i
     {
-        get => GdObject.Get("array_rect2i").As<Godot.Collections.Array<Rect2i>>();
+        get => GdObject.Get("array_rect2i").As<Godot.Collections.Array<Godot.Rect2I>>();
         set => GdObject.Set("array_rect2i", value);
     }
 
-    public Godot.Collections.Array<RID> array_rid
+    public Godot.Collections.Array<Godot.Rid> array_rid
     {
-        get => GdObject.Get("array_rid").As<Godot.Collections.Array<RID>>();
+        get => GdObject.Get("array_rid").As<Godot.Collections.Array<Godot.Rid>>();
         set => GdObject.Set("array_rid", value);
     }
 
@@ -180,57 +180,57 @@ public partial class TypedArrayBridge : GDScriptBridge
         set => GdObject.Set("array_string", value);
     }
 
-    public Godot.Collections.Array<StringName> array_stringname
+    public Godot.Collections.Array<Godot.StringName> array_stringname
     {
-        get => GdObject.Get("array_stringname").As<Godot.Collections.Array<StringName>>();
+        get => GdObject.Get("array_stringname").As<Godot.Collections.Array<Godot.StringName>>();
         set => GdObject.Set("array_stringname", value);
     }
 
-    public Godot.Collections.Array<Transform2D> array_transform2d
+    public Godot.Collections.Array<Godot.Transform2D> array_transform2d
     {
-        get => GdObject.Get("array_transform2d").As<Godot.Collections.Array<Transform2D>>();
+        get => GdObject.Get("array_transform2d").As<Godot.Collections.Array<Godot.Transform2D>>();
         set => GdObject.Set("array_transform2d", value);
     }
 
-    public Godot.Collections.Array<Transform3D> array_transform3d
+    public Godot.Collections.Array<Godot.Transform3D> array_transform3d
     {
-        get => GdObject.Get("array_transform3d").As<Godot.Collections.Array<Transform3D>>();
+        get => GdObject.Get("array_transform3d").As<Godot.Collections.Array<Godot.Transform3D>>();
         set => GdObject.Set("array_transform3d", value);
     }
 
-    public Godot.Collections.Array<Vector2> array_vector2
+    public Godot.Collections.Array<Godot.Vector2> array_vector2
     {
-        get => GdObject.Get("array_vector2").As<Godot.Collections.Array<Vector2>>();
+        get => GdObject.Get("array_vector2").As<Godot.Collections.Array<Godot.Vector2>>();
         set => GdObject.Set("array_vector2", value);
     }
 
-    public Godot.Collections.Array<Vector2i> array_vector2i
+    public Godot.Collections.Array<Godot.Vector2I> array_vector2i
     {
-        get => GdObject.Get("array_vector2i").As<Godot.Collections.Array<Vector2i>>();
+        get => GdObject.Get("array_vector2i").As<Godot.Collections.Array<Godot.Vector2I>>();
         set => GdObject.Set("array_vector2i", value);
     }
 
-    public Godot.Collections.Array<Vector3> array_vector3
+    public Godot.Collections.Array<Godot.Vector3> array_vector3
     {
-        get => GdObject.Get("array_vector3").As<Godot.Collections.Array<Vector3>>();
+        get => GdObject.Get("array_vector3").As<Godot.Collections.Array<Godot.Vector3>>();
         set => GdObject.Set("array_vector3", value);
     }
 
-    public Godot.Collections.Array<Vector3i> array_vector3i
+    public Godot.Collections.Array<Godot.Vector3I> array_vector3i
     {
-        get => GdObject.Get("array_vector3i").As<Godot.Collections.Array<Vector3i>>();
+        get => GdObject.Get("array_vector3i").As<Godot.Collections.Array<Godot.Vector3I>>();
         set => GdObject.Set("array_vector3i", value);
     }
 
-    public Godot.Collections.Array<Vector4> array_vector4
+    public Godot.Collections.Array<Godot.Vector4> array_vector4
     {
-        get => GdObject.Get("array_vector4").As<Godot.Collections.Array<Vector4>>();
+        get => GdObject.Get("array_vector4").As<Godot.Collections.Array<Godot.Vector4>>();
         set => GdObject.Set("array_vector4", value);
     }
 
-    public Godot.Collections.Array<Vector4i> array_vector4i
+    public Godot.Collections.Array<Godot.Vector4I> array_vector4i
     {
-        get => GdObject.Get("array_vector4i").As<Godot.Collections.Array<Vector4i>>();
+        get => GdObject.Get("array_vector4i").As<Godot.Collections.Array<Godot.Vector4I>>();
         set => GdObject.Set("array_vector4i", value);
     }
 

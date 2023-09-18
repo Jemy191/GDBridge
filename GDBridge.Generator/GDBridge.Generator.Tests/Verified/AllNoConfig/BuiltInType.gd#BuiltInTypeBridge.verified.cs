@@ -12,9 +12,9 @@ public partial class BuiltInTypeBridge : GDScriptBridge
         set => GdObject.Set("var_variant", value);
     }
 
-    public AABB var_aabb
+    public Godot.Aabb var_aabb
     {
-        get => GdObject.Get("var_aabb").As<AABB>();
+        get => GdObject.Get("var_aabb").As<Godot.Aabb>();
         set => GdObject.Set("var_aabb", value);
     }
 
@@ -24,9 +24,9 @@ public partial class BuiltInTypeBridge : GDScriptBridge
         set => GdObject.Set("var_array", value);
     }
 
-    public Basis var_basis
+    public Godot.Basis var_basis
     {
-        get => GdObject.Get("var_basis").As<Basis>();
+        get => GdObject.Get("var_basis").As<Godot.Basis>();
         set => GdObject.Set("var_basis", value);
     }
 
@@ -42,9 +42,9 @@ public partial class BuiltInTypeBridge : GDScriptBridge
         set => GdObject.Set("var_callable", value);
     }
 
-    public Color var_color
+    public Godot.Color var_color
     {
-        get => GdObject.Get("var_color").As<Color>();
+        get => GdObject.Get("var_color").As<Godot.Color>();
         set => GdObject.Set("var_color", value);
     }
 
@@ -66,9 +66,9 @@ public partial class BuiltInTypeBridge : GDScriptBridge
         set => GdObject.Set("var_int", value);
     }
 
-    public NodePath var_nodepath
+    public Godot.NodePath var_nodepath
     {
-        get => GdObject.Get("var_nodepath").As<NodePath>();
+        get => GdObject.Get("var_nodepath").As<Godot.NodePath>();
         set => GdObject.Set("var_nodepath", value);
     }
 
@@ -132,39 +132,39 @@ public partial class BuiltInTypeBridge : GDScriptBridge
         set => GdObject.Set("var_packedvector3array", value);
     }
 
-    public Plane var_plane
+    public Godot.Plane var_plane
     {
-        get => GdObject.Get("var_plane").As<Plane>();
+        get => GdObject.Get("var_plane").As<Godot.Plane>();
         set => GdObject.Set("var_plane", value);
     }
 
-    public Projection var_projection
+    public Godot.Projection var_projection
     {
-        get => GdObject.Get("var_projection").As<Projection>();
+        get => GdObject.Get("var_projection").As<Godot.Projection>();
         set => GdObject.Set("var_projection", value);
     }
 
-    public Quaternion var_quaternion
+    public Godot.Quaternion var_quaternion
     {
-        get => GdObject.Get("var_quaternion").As<Quaternion>();
+        get => GdObject.Get("var_quaternion").As<Godot.Quaternion>();
         set => GdObject.Set("var_quaternion", value);
     }
 
-    public Rect2 var_rect2
+    public Godot.Rect2 var_rect2
     {
-        get => GdObject.Get("var_rect2").As<Rect2>();
+        get => GdObject.Get("var_rect2").As<Godot.Rect2>();
         set => GdObject.Set("var_rect2", value);
     }
 
-    public Rect2i var_rect2i
+    public Godot.Rect2I var_rect2i
     {
-        get => GdObject.Get("var_rect2i").As<Rect2i>();
+        get => GdObject.Get("var_rect2i").As<Godot.Rect2I>();
         set => GdObject.Set("var_rect2i", value);
     }
 
-    public RID var_rid
+    public Godot.Rid var_rid
     {
-        get => GdObject.Get("var_rid").As<RID>();
+        get => GdObject.Get("var_rid").As<Godot.Rid>();
         set => GdObject.Set("var_rid", value);
     }
 
@@ -180,57 +180,57 @@ public partial class BuiltInTypeBridge : GDScriptBridge
         set => GdObject.Set("var_string", value);
     }
 
-    public StringName var_stringname
+    public Godot.StringName var_stringname
     {
-        get => GdObject.Get("var_stringname").As<StringName>();
+        get => GdObject.Get("var_stringname").As<Godot.StringName>();
         set => GdObject.Set("var_stringname", value);
     }
 
-    public Transform2D var_transform2d
+    public Godot.Transform2D var_transform2d
     {
-        get => GdObject.Get("var_transform2d").As<Transform2D>();
+        get => GdObject.Get("var_transform2d").As<Godot.Transform2D>();
         set => GdObject.Set("var_transform2d", value);
     }
 
-    public Transform3D var_transform3d
+    public Godot.Transform3D var_transform3d
     {
-        get => GdObject.Get("var_transform3d").As<Transform3D>();
+        get => GdObject.Get("var_transform3d").As<Godot.Transform3D>();
         set => GdObject.Set("var_transform3d", value);
     }
 
-    public Vector2 var_vector2
+    public Godot.Vector2 var_vector2
     {
-        get => GdObject.Get("var_vector2").As<Vector2>();
+        get => GdObject.Get("var_vector2").As<Godot.Vector2>();
         set => GdObject.Set("var_vector2", value);
     }
 
-    public Vector2i var_vector2i
+    public Godot.Vector2I var_vector2i
     {
-        get => GdObject.Get("var_vector2i").As<Vector2i>();
+        get => GdObject.Get("var_vector2i").As<Godot.Vector2I>();
         set => GdObject.Set("var_vector2i", value);
     }
 
-    public Vector3 var_vector3
+    public Godot.Vector3 var_vector3
     {
-        get => GdObject.Get("var_vector3").As<Vector3>();
+        get => GdObject.Get("var_vector3").As<Godot.Vector3>();
         set => GdObject.Set("var_vector3", value);
     }
 
-    public Vector3i var_vector3i
+    public Godot.Vector3I var_vector3i
     {
-        get => GdObject.Get("var_vector3i").As<Vector3i>();
+        get => GdObject.Get("var_vector3i").As<Godot.Vector3I>();
         set => GdObject.Set("var_vector3i", value);
     }
 
-    public Vector4 var_vector4
+    public Godot.Vector4 var_vector4
     {
-        get => GdObject.Get("var_vector4").As<Vector4>();
+        get => GdObject.Get("var_vector4").As<Godot.Vector4>();
         set => GdObject.Set("var_vector4", value);
     }
 
-    public Vector4i var_vector4i
+    public Godot.Vector4I var_vector4i
     {
-        get => GdObject.Get("var_vector4i").As<Vector4i>();
+        get => GdObject.Get("var_vector4i").As<Godot.Vector4I>();
         set => GdObject.Set("var_vector4i", value);
     }
 
