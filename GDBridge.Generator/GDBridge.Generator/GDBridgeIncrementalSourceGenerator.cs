@@ -67,7 +67,7 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
                 .ToList();
 
         var availableTypes = compilation.Assembly.TypeNames
-            .Select(tn => new AvailableType(tn, ResolveNamespace(compilation.GetSymbolsWithName(tn).Single().ContainingNamespace)))
+            .Select(tn => new AvailableType(tn, ResolveNamespace(compilation.GetSymbolsWithName(tn, SymbolFilter.Type).Single().ContainingNamespace)))
             .ToList()
             .Concat(availableGodotTypes)
             .ToList();
