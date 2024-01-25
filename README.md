@@ -1,6 +1,6 @@
 [![Test](https://github.com/TheJemy191/GDBridge/actions/workflows/Test.yml/badge.svg)](https://github.com/TheJemy191/GDBridge/actions/workflows/Test.yml)
 # GDBridge
-## ⚠In active developement
+## ⚠Not feature complete
 Some thing can change but not that much.
 
 Simple package to simplify C# -> GDScript interoperability.  
@@ -20,7 +20,7 @@ It aims to reduce or remove the need to use string and untyped way of communicat
 - [ ] GodotObject support.
 And more to come.
 
-### How to use(See [Sample](https://github.com/TheJemy191/GDBridge/blob/main/GDBridge.Generator/GDBridge.Generator.Sample/Test.cs))
+### How to use(See [Sample](https://github.com/TheJemy191/GDBridge/blob/main/GDBridge.Generator/GDBridge.Generator.Sample/Sample.cs))
 
 Make sure to instal both GDBridge and GDBridge.Generator.  
 Only script with class_name will be bridged.  
