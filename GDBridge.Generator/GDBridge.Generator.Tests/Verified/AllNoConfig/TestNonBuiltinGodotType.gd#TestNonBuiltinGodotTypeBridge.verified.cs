@@ -2,7 +2,6 @@
 using GDBridge;
 using Godot;
 
-[GlobalClass]
 public partial class TestNonBuiltinGodotTypeBridge : GDScriptBridge
 {
     public const string GDClassName = "TestNonBuiltinGodotType";

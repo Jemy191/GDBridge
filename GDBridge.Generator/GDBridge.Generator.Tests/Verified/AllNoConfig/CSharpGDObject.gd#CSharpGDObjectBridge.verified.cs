@@ -2,7 +2,6 @@
 using GDBridge;
 using Godot;
 
-[GlobalClass]
 public partial class CSharpGDObjectBridge : GDScriptBridge
 {
     public const string GDClassName = "CSharpGDObject";
