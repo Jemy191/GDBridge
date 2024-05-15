@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -42,7 +41,7 @@ class BridgeWriter
         return source;
     }
 
-    public SourceWriter Functions(IEnumerable<GdFunction> functions)
+    public SourceWriter Functions(IEnumerable<GdFunction> functions, ReadOnlyCollection<GdVariable> variables)
     {
         var scriptFunctions = new List<GdFunction>();
 
@@ -75,9 +74,22 @@ class BridgeWriter
 
         foreach (var function in scriptFunctions)
         {
+            var returnString = function.ReturnType.ToCSharpTypeString(availableTypes);
+            
+            var funcName = Pascalize(function.Name);
+
+            var funcNameStart = function.Name.Substring(0, 4);
+            var funcNameEnd = function.Name.Substring(4);
+            if (!configuration.UsePascalCase && variables.Any(v => v.Name == funcNameEnd) && funcNameStart is "get_" or "set_")
+                funcName += "_compat";
+            
+            var parameters = InParameters(function.Parameters);
+            var gdParameters = CallParameters(function.Parameters);
+            var typeCast = GetTypeCast(function.ReturnType);
+            
             source.WriteEmptyLines(1)
                 .WriteLine(
-                    $"""public {function.ReturnType.ToCSharpTypeString(availableTypes)} {Pascalize(function.Name)}({InParameters(function.Parameters)}) => GdObject.Call("{function.Name}"{CallParameters(function.Parameters)}){GetTypeCast(function.ReturnType)};""");
+                    $"""public {returnString} {funcName}({parameters}) => GdObject.Call("{function.Name}"{gdParameters}){typeCast};""");
         }
 
         return source;

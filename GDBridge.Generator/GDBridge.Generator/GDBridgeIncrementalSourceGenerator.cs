@@ -125,7 +125,7 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
             .WriteLine($"""public const string GDClassName = "{gdClass.ClassName}";""");
         bridgeWriter.Variables(gdClass.Variables)
             .WriteLine($"public {className}(GodotObject gdObject) : base(gdObject) {{}}");
-        bridgeWriter.Functions(gdClass.Functions)
+        bridgeWriter.Functions(gdClass.Functions, gdClass.Variables)
             .CloseBlock();
 
         return source.ToString();
