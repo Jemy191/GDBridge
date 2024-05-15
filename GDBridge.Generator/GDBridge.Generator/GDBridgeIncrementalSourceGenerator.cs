@@ -118,7 +118,6 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
                  using GDBridge;
                  using Godot;
 
-                 [GlobalClass]
                  public partial class {className} : GDScriptBridge
                  """)
             .OpenBlock()
