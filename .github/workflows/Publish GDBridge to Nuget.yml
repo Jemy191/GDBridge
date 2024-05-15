@@ -14,10 +14,10 @@ jobs:
 
     steps:
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
     
     - name: Setup .NET
-      uses: actions/setup-dotnet@v3
+      uses: actions/setup-dotnet@v4
 
     - name: Pack
       run: dotnet pack ./GDBridge/GDBridge.csproj --configuration Release -p:PackageVersion=${{ env.Version }} --output .
