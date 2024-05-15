@@ -43,7 +43,7 @@
     <!--To add non generator see this: https://www.thinktecture.com/en/net/roslyn-source-generators-using-3rd-party-libraries/-->
     <!--More info here https://github.com/dotnet/roslyn/discussions/47517-->
     <ItemGroup>
-        <PackageReference Include="GDParser" Version="0.7.0" GeneratePathProperty="true" IncludeAssets="all" />
+        <PackageReference Include="GDParser" Version="0.8.0" GeneratePathProperty="true" IncludeAssets="all" />
         <PackageReference Include="SourceGeneratorUtils" Version="1.4.3" GeneratePathProperty="true" IncludeAssets="all"/>
         <PackageReference Include="System.Text.Json" Version="7.0.3" GeneratePathProperty="true" IncludeAssets="all"/>
     </ItemGroup>
