@@ -2,7 +2,6 @@
 using GDBridge;
 using Godot;
 
-[GlobalClass]
 public partial class DeckDataTestBridge : GDScriptBridge
 {
     public const string GDClassName = "DeckDataTest";

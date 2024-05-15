@@ -2,7 +2,6 @@
 using GDBridge;
 using Godot;
 
-[GlobalClass]
 public partial class BuiltInTypeBridge : GDScriptBridge
 {
     public const string GDClassName = "BuiltInType";
