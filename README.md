@@ -16,7 +16,7 @@ It aims to reduce or remove the need to use string and untyped way of communicat
 - [X] Respect the _private method and field.
 - [X] Configurable.
 - [X] GodotObject support.
-- [X] Only generate class if there a matching partial bridge class in your project.
+- [X] Only generate class if there is matching partial bridge class in your project.
 - [ ] Signal support.
 And more to come.
 
