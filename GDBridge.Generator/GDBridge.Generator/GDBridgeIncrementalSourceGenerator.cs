@@ -47,7 +47,11 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
         {
             var className = $"{gdClass.ClassName}Bridge";
 
-            var existingNamespace = availableTypes.SingleOrDefault(t => t.Name == className)?.Namespace;
+            var existingMatchingPartialClass = availableTypes.SingleOrDefault(t => t.Name == className);
+            var existingNamespace = existingMatchingPartialClass?.Namespace;
+            
+            if(configuration.GenerateOnlyForMatchingBridgeClass && existingMatchingPartialClass is null)
+                continue;
             
             var source = GenerateClass(gdClass, className, availableTypes, configuration, existingNamespace);
 
