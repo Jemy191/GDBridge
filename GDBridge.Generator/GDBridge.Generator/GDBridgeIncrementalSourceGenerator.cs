@@ -39,18 +39,22 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
 
         var availableTypes = GetAvailableTypes(compilation);
 
-        foreach (var script in scripts)
+        var gdClasses = scripts
+            .Select(ClassParser.Parse)
+            .Where(c => c?.ClassName != null);
+        
+        foreach (var gdClass in gdClasses)
         {
-            var gdClass = ClassParser.Parse(script);
-            if (gdClass?.ClassName is null)
-                continue;
-
             var className = $"{gdClass.ClassName}Bridge";
-            var source = GenerateClass(gdClass, className, availableTypes, configuration);
+
+            var existingNamespace = availableTypes.SingleOrDefault(t => t.Name == className)?.Namespace;
+            
+            var source = GenerateClass(gdClass, className, availableTypes, configuration, existingNamespace);
 
             context.AddSource(className, source);
         }
     }
+    
     static List<AvailableType> GetAvailableTypes(Compilation compilation)
     {
         var godotAssembly = compilation.SourceModule.ReferencedAssemblySymbols
@@ -108,12 +112,18 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
         return childNamespace;
     }
 
-    static string GenerateClass(GdClass gdClass, string className, ICollection<AvailableType> availableTypes, Configuration configuration)
+    static string GenerateClass(GdClass gdClass, string className, ICollection<AvailableType> availableTypes, Configuration configuration, string? existingNamespace = null)
     {
         var source = new SourceWriter();
         var bridgeWriter = new BridgeWriter(availableTypes, source, configuration);
 
-        source.WriteLine(
+        if (!string.IsNullOrWhiteSpace(existingNamespace))
+            source
+                .WriteLine($"namespace {existingNamespace}")
+                .OpenBlock();
+        
+        source
+            .WriteLine(
                 $"""
                  using GDBridge;
                  using Godot;
@@ -122,10 +132,15 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
                  """)
             .OpenBlock()
             .WriteLine($"""public const string GDClassName = "{gdClass.ClassName}";""");
-        bridgeWriter.Variables(gdClass.Variables)
+        
+        bridgeWriter
+            .Variables(gdClass.Variables)
             .WriteLine($"public {className}(GodotObject gdObject) : base(gdObject) {{}}");
-        bridgeWriter.Functions(gdClass.Functions, gdClass.Variables)
-            .CloseBlock();
+        
+        bridgeWriter
+            .Functions(gdClass.Functions, gdClass.Variables);
+
+            source.CloseAllBlocks();
 
         return source.ToString();
     }
