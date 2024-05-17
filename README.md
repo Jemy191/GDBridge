@@ -15,9 +15,8 @@ It aims to reduce or remove the need to use string and untyped way of communicat
 - [X] Use your C# class in the generated code(Even the bridge themselve).
 - [X] Respect the _private method and field.
 - [X] Configurable.
-- [ ] Use root namespace as default.
+- [X] GodotObject support.
 - [ ] Signal support.
-- [ ] GodotObject support.
 And more to come.
 
 ### How to use(See [Sample](https://github.com/TheJemy191/GDBridge/blob/main/GDBridge.Generator/GDBridge.Generator.Sample/Sample.cs))
