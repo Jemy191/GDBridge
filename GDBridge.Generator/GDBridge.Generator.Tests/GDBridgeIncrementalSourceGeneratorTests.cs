@@ -9,12 +9,10 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using VerifyTests;
 using Xunit;
-using VerifyXunit;
 using static VerifyXunit.Verifier;
 
 namespace GDBridge.Generator.Tests;
 
-[UsesVerify]
 public class GDBridgeIncrementalSourceGeneratorTests
 {
     static GDBridgeIncrementalSourceGeneratorTests() => VerifySourceGenerators.Initialize();
