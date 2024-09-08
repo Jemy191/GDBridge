@@ -24,13 +24,13 @@
     </ItemGroup>
     
     <ItemGroup>
-        <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1">
+        <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.2.4">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
         </PackageReference>
     </ItemGroup>
     
     <ItemGroup>
-      <PackageReference Include="GodotSharp" Version="4.1.1" />
+      <PackageReference Include="GodotSharp" Version="4.3.0" />
     </ItemGroup>
 </Project>

@@ -32,9 +32,9 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.6.0"/>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.6.0"/>
-        <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1">
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.11.0" />
+        <PackageReference Include="DotNet.ReproducibleBuilds" Version="1.2.4">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
         </PackageReference>
@@ -45,7 +45,7 @@
     <ItemGroup>
         <PackageReference Include="GDParser" Version="0.8.0" GeneratePathProperty="true" IncludeAssets="all" />
         <PackageReference Include="SourceGeneratorUtils" Version="1.4.3" GeneratePathProperty="true" IncludeAssets="all"/>
-        <PackageReference Include="System.Text.Json" Version="7.0.3" GeneratePathProperty="true" IncludeAssets="all"/>
+        <PackageReference Include="System.Text.Json" Version="8.0.4" GeneratePathProperty="true" IncludeAssets="all" />
     </ItemGroup>
 
     <PropertyGroup>
