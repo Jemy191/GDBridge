@@ -94,6 +94,26 @@ class BridgeWriter
 
         return source;
     }
+
+    public SourceWriter SignalNames(IEnumerable<GdSignal> signals)
+    {
+        source.WriteEmptyLines(1)
+            .WriteLine("""public new class SignalName : global::Godot.GodotObject.SignalName""")
+            .OpenBlock();
+        
+        
+        foreach (var signal in signals) {
+            source.WriteEmptyLines(1)
+                .WriteLine("""// Summary:""")
+                .WriteLine($"""//     Cached name for the '{signal.Name}' signal.""")
+                .WriteLine($"""public static readonly StringName {Pascalize(signal.Name)} = "{signal.Name}";""");
+        }
+
+        source.CloseBlock();
+
+        return source;
+    }
+
     string InParameters(IEnumerable<GdVariable> parameters) => string.Join(", ", parameters.Select(InParameter));
     string InParameter(GdVariable parameter) => $"{parameter.Type.ToCSharpTypeString(availableTypes)} {Pascalize(SanitizeParameter(parameter.Name))}";
     string Pascalize(string text) => configuration.UsePascalCase ? Regex.Replace(text, "(?:^|_| +)(.)", match => match.Groups[1].Value.ToUpper()) : text;
