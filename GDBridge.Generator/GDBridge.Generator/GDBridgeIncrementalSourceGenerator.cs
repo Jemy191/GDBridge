@@ -145,7 +145,7 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
             .Functions(gdClass.Functions, gdClass.Variables);
 
         bridgeWriter
-            .SignalNames(gdClass.Signals);
+            .Signals(gdClass.Signals);
 
         source.CloseAllBlocks();
 

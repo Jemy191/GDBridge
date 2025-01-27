@@ -95,12 +95,13 @@ class BridgeWriter
         return source;
     }
 
-    public SourceWriter SignalNames(IEnumerable<GdSignal> signals)
+    public SourceWriter Signals(IEnumerable<GdSignal> signals)
     {
+        // SignalName
         source.WriteEmptyLines(1)
+            .WriteLine("""/// <inheritdoc cref="global::Godot.GodotObject.SignalName"/>""")
             .WriteLine("""public new class SignalName : global::Godot.GodotObject.SignalName""")
             .OpenBlock();
-        
         
         foreach (var signal in signals) {
             source.WriteEmptyLines(1)
@@ -110,6 +111,17 @@ class BridgeWriter
         }
 
         source.CloseBlock();
+
+        // Signal events
+        foreach (var signal in signals) {
+            var signalName = Pascalize(signal.Name);
+            source
+                .WriteLine($"""public event System.Action{(signal.Parameters.Any() ? $"<{string.Join(", ", signal.Parameters.Select(p => $"{p.Type.ToCSharpTypeString(availableTypes)}"))}>": "")} {signalName}""")
+                .OpenBlock()
+                .WriteLine("add").OpenBlock().WriteLine($"""Connect(SignalName.{signalName}, global::Godot.Callable.From(value));""").CloseBlock()
+                .WriteLine("remove").OpenBlock().WriteLine($"""Disconnect(SignalName.{signalName}, global::Godot.Callable.From(value));""").CloseBlock()
+                .CloseBlock();
+        }
 
         return source;
     }
