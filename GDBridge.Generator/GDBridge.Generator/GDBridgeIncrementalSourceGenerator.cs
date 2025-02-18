@@ -140,18 +140,18 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
 
                  public partial class {className} : GDScriptBridge
                  """)
-            .OpenBlock()
-            .WriteLine($"""public const string GDClassName = "{gdClass.ClassName}";""");
+            .OpenBlock();
         
-        bridgeWriter
-            .Variables(gdClass.Variables)
-            .WriteLine($"public {className}(GodotObject gdObject) : base(gdObject) {{}}");
+        source.WriteLine($"public {className}(GodotObject gdObject) : base(gdObject) {{}}").WriteEmptyLines(1);
+        source.WriteLine($"""public const string GDClassName = "{gdClass.ClassName}";""").WriteEmptyLines(1);
         
-        bridgeWriter
-            .Functions(gdClass.Functions, gdClass.Variables);
+        bridgeWriter.Properties(gdClass.Variables);
+        bridgeWriter.Methods(gdClass.Functions, gdClass.Variables);
+        bridgeWriter.Signals(gdClass.Signals);
 
-        bridgeWriter
-            .Signals(gdClass.Signals);
+        bridgeWriter.PropertyNameInnerClass(gdClass.Variables).WriteEmptyLines(1);
+        bridgeWriter.MethodNameInnerClass(gdClass.Functions).WriteEmptyLines(1);
+        bridgeWriter.SignalNameInnerClass(gdClass.Signals);
 
         source.CloseAllBlocks();
 

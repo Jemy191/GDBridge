@@ -20,55 +20,74 @@ class BridgeWriter
         this.configuration = configuration;
     }
 
-    public SourceWriter Variables(ReadOnlyCollection<GdVariable> variables)
+    public SourceWriter Properties(ReadOnlyCollection<GdVariable> properties)
     {
-        foreach (var variable in variables)
+        foreach (var property in properties)
         {
-            if (variable.Name.StartsWith("_"))
+            if (property.Name.StartsWith("_"))
                 continue;
 
-            source.WriteLine($"public {variable.Type.ToCSharpTypeString(availableTypes)} {Pascalize(variable.Name)}")
+            var pascalizedName = Pascalize(property.Name);
+
+            source.WriteLine($"public {property.Type.ToCSharpTypeString(availableTypes)} {pascalizedName}")
                 .OpenBlock()
                 .WriteLine(
                     $"""
-                     get => GdObject.Get("{variable.Name}"){GetTypeCast(variable.Type)};
-                     set => GdObject.Set("{variable.Name}", Godot.Variant.From(value));
+                     get => GdObject.Get(PropertyName.{pascalizedName}){GetTypeCast(property.Type)};
+                     set => GdObject.Set(PropertyName.{pascalizedName}, Godot.Variant.From(value));
                      """)
                 .CloseBlock()
                 .WriteEmptyLines(1);
         }
+        return source;
+    }
+
+    public SourceWriter PropertyNameInnerClass(ReadOnlyCollection<GdVariable> properties)
+    {
+        source.WriteLine("""/// <inheritdoc cref="global::Godot.GodotObject.PropertyName"/>""")
+            .WriteLine("""public new class PropertyName : global::Godot.GodotObject.PropertyName""")
+            .OpenBlock();
+
+        for (int i = 0; i < properties.Count(); ++i) {
+            var property = properties.ElementAt(i);
+            if (i > 0) source.WriteEmptyLines(1);
+            source.WriteLine("//").WriteLine("// Summary:")
+                .WriteLine($"""//     Cached name for the '{property.Name}' property.""")
+                .WriteLine($"""public static readonly StringName {Pascalize(property.Name)} = "{property.Name}";""");
+        }
+        source.CloseBlock();
 
         return source;
     }
 
-    public SourceWriter Functions(IEnumerable<GdFunction> functions, ReadOnlyCollection<GdVariable> variables)
+    public SourceWriter Methods(IEnumerable<GdFunction> methods, ReadOnlyCollection<GdVariable> variables)
     {
         var scriptFunctions = new List<GdFunction>();
 
         // Iterate over functions with default parameters omitted
-        foreach (var function in functions)
+        foreach (var method in methods)
         {
             // Filter out functions which start with an underscore to avoid native function overrides
-            if (function.Name.StartsWith("_"))
+            if (method.Name.StartsWith("_"))
             {
                 continue;
             }
 
-            var defaultParams = function.Parameters.Where(p => p.Name.Contains('=')).ToList();
+            var defaultParams = method.Parameters.Where(p => p.Name.Contains('=')).ToList();
             if (!defaultParams.Any())
             {
-                scriptFunctions.Add(function);
+                scriptFunctions.Add(method);
                 continue;
             }
-            var nonDefaults = function.Parameters.Where(p => !defaultParams.Contains(p)).ToList();
+            var nonDefaults = method.Parameters.Where(p => !defaultParams.Contains(p)).ToList();
 
             // Add a new function for each parameter signature
             for (var i = 0; i <= defaultParams.Count; i++)
             {
                 var @params = new List<GdVariable>(nonDefaults);
                 @params.AddRange(defaultParams.Take(i));
-                scriptFunctions.Add(new GdFunction(function.Name, new ReadOnlyCollection<GdVariable>(@params),
-                    function.ReturnType));
+                scriptFunctions.Add(new GdFunction(method.Name, new ReadOnlyCollection<GdVariable>(@params),
+                    method.ReturnType));
             }
         }
 
@@ -87,19 +106,51 @@ class BridgeWriter
             var gdParameters = CallParameters(function.Parameters);
             var typeCast = GetTypeCast(function.ReturnType);
             
-            source.WriteEmptyLines(1)
-                .WriteLine(
-                    $"""public {returnString} {funcName}({parameters}) => GdObject.Call("{function.Name}"{gdParameters}){typeCast};""");
+            source.WriteLine($"""public {returnString} {funcName}({parameters}) => GdObject.Call(MethodName.{funcName}, {gdParameters}){typeCast};""");
+            source.WriteEmptyLines(1);
         }
+
+        return source;
+    }
+
+    public SourceWriter MethodNameInnerClass(IEnumerable<GdFunction> methods)
+    {
+        source.WriteLine("""/// <inheritdoc cref="global::Godot.GodotObject.MethodName"/>""")
+            .WriteLine("""public new class MethodName : global::Godot.GodotObject.MethodName""")
+            .OpenBlock();
+
+        for (int i = 0; i < methods.Count(); ++i) {
+            var method = methods.ElementAt(i);
+            if (i > 0) source.WriteEmptyLines(1);
+            source.WriteLine("//").WriteLine("// Summary:")
+                .WriteLine($"""//     Cached name for the '{method.Name}' method.""")
+                .WriteLine($"""public static readonly StringName {Pascalize(method.Name)} = "{method.Name}";""");
+        }
+        source.CloseBlock();
 
         return source;
     }
 
     public SourceWriter Signals(IEnumerable<GdSignal> signals)
     {
-        // SignalName
-        source.WriteEmptyLines(1)
-            .WriteLine("""/// <inheritdoc cref="global::Godot.GodotObject.SignalName"/>""")
+        // Signal events
+        foreach (var signal in signals) {
+            var signalName = Pascalize(signal.Name);
+            source
+                .WriteLine($"""public event System.Action{(signal.Parameters.Any() ? $"<{string.Join(", ", signal.Parameters.Select(p => $"{p.Type.ToCSharpTypeString(availableTypes)}"))}>": "")} {signalName}""")
+                .OpenBlock()
+                .WriteLine("add").OpenBlock().WriteLine($"""Connect(SignalName.{signalName}, global::Godot.Callable.From(value));""").CloseBlock()
+                .WriteLine("remove").OpenBlock().WriteLine($"""Disconnect(SignalName.{signalName}, global::Godot.Callable.From(value));""").CloseBlock()
+                .CloseBlock()
+                .WriteEmptyLines(1);
+        }
+
+        return source;
+    }
+
+    public SourceWriter SignalNameInnerClass(IEnumerable<GdSignal> signals)
+    {
+        source.WriteLine("""/// <inheritdoc cref="global::Godot.GodotObject.SignalName"/>""")
             .WriteLine("""public new class SignalName : global::Godot.GodotObject.SignalName""")
             .OpenBlock();
 
@@ -110,19 +161,7 @@ class BridgeWriter
                 .WriteLine($"""//     Cached name for the '{signal.Name}' signal.""")
                 .WriteLine($"""public static readonly StringName {Pascalize(signal.Name)} = "{signal.Name}";""");
         }
-
         source.CloseBlock();
-
-        // Signal events
-        foreach (var signal in signals) {
-            var signalName = Pascalize(signal.Name);
-            source
-                .WriteLine($"""public event System.Action{(signal.Parameters.Any() ? $"<{string.Join(", ", signal.Parameters.Select(p => $"{p.Type.ToCSharpTypeString(availableTypes)}"))}>": "")} {signalName}""")
-                .OpenBlock()
-                .WriteLine("add").OpenBlock().WriteLine($"""Connect(SignalName.{signalName}, global::Godot.Callable.From(value));""").CloseBlock()
-                .WriteLine("remove").OpenBlock().WriteLine($"""Disconnect(SignalName.{signalName}, global::Godot.Callable.From(value));""").CloseBlock()
-                .CloseBlock();
-        }
 
         return source;
     }
@@ -152,10 +191,9 @@ class BridgeWriter
 
     string CallParameters(IEnumerable<GdVariable> parameters)
     {
-        parameters = parameters.ToList();
         if (!parameters.Any())
             return "";
-        return $", {string.Join(", ", parameters.Select(p => Pascalize(SanitizeParameter(p.Name))))}";
+        return $"{string.Join(", ", parameters.Select(p => Pascalize(SanitizeParameter(p.Name))))}";
     }
 
     string GetTypeCast(GdType type)
@@ -166,6 +204,4 @@ class BridgeWriter
 
         return $".As<{typeString}>()";
     }
-
-
 }
