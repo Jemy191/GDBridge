@@ -6,6 +6,7 @@ using GDParser;
 using Microsoft.CodeAnalysis;
 using SourceGeneratorUtils;
 using System.Text.Json;
+using System.Diagnostics;
 
 namespace GDBridge.Generator;
 
@@ -41,17 +42,21 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
 
         var gdClasses = scripts
             .Select(ClassParser.Parse)
-            .Where(c => c?.ClassName != null);
+            .Where(c => c is not null && c?.ClassName is not null);
         
         foreach (var gdClass in gdClasses)
         {
-            var className = $"{gdClass.ClassName}Bridge";
+            var className = gdClass!.ClassName!;
+            if (configuration.AppendBridgeToClassNames) className = $"{className}Bridge";
 
             var existingMatchingPartialClass = availableTypes.SingleOrDefault(t => t.Name == className);
             var existingNamespace = existingMatchingPartialClass?.Namespace;
             
             if(configuration.GenerateOnlyForMatchingBridgeClass && existingMatchingPartialClass is null)
                 continue;
+            
+            if (existingNamespace is null && !string.IsNullOrWhiteSpace(configuration.DefaultBridgeNamespace))
+                existingNamespace = configuration.DefaultBridgeNamespace;
             
             var source = GenerateClass(gdClass, className, availableTypes, configuration, existingNamespace);
 
