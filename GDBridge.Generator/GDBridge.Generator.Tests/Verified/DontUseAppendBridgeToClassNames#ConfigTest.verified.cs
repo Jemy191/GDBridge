@@ -20,9 +20,9 @@ public partial class ConfigTest : GDScriptBridge
         set => GdObject.Set(PropertyName.property_var, Godot.Variant.From(value));
     }
 
-    public Variant snake_case_function() => GdObject.Call(MethodName.snake_case_function, );
+    public Variant snake_case_function() => GdObject.Call(MethodName.snake_case_function);
 
-    public Variant get_property_var_compat() => GdObject.Call(MethodName.get_property_var_compat, );
+    public Variant get_property_var_compat() => GdObject.Call(MethodName.get_property_var_compat);
 
     /// <inheritdoc cref="global::Godot.GodotObject.PropertyName"/>
     public new class PropertyName : global::Godot.GodotObject.PropertyName

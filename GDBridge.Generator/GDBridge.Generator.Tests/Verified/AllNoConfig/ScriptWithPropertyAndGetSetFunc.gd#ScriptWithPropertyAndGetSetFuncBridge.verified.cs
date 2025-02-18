@@ -16,7 +16,7 @@ public partial class ScriptWithPropertyAndGetSetFuncBridge : GDScriptBridge
 
     public void set_limit_target_compat(Godot.NodePath value) => GdObject.Call(MethodName.set_limit_target_compat, value);
 
-    public Godot.NodePath get_limit_target_compat() => GdObject.Call(MethodName.get_limit_target_compat, ).As<Godot.NodePath>();
+    public Godot.NodePath get_limit_target_compat() => GdObject.Call(MethodName.get_limit_target_compat).As<Godot.NodePath>();
 
     /// <inheritdoc cref="global::Godot.GodotObject.PropertyName"/>
     public new class PropertyName : global::Godot.GodotObject.PropertyName

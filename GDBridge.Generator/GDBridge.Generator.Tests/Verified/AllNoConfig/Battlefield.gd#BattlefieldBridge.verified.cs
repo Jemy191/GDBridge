@@ -1,9 +1,9 @@
 ﻿//HintName: BattlefieldBridge.cs
+using GDBridge;
+using Godot;
+
 namespace TestNamespace
 {
-    using GDBridge;
-    using Godot;
-    
     public partial class BattlefieldBridge : GDScriptBridge
     {
         public BattlefieldBridge(GodotObject gdObject) : base(gdObject) {}

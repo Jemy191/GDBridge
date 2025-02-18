@@ -126,21 +126,16 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
     {
         var source = new SourceWriter();
         var bridgeWriter = new BridgeWriter(availableTypes, source, configuration);
+        
+        source.WriteLine("using GDBridge;").WriteLine("using Godot;").WriteEmptyLines(1);
 
         if (!string.IsNullOrWhiteSpace(existingNamespace))
             source
                 .WriteLine($"namespace {existingNamespace}")
                 .OpenBlock();
         
-        source
-            .WriteLine(
-                $"""
-                 using GDBridge;
-                 using Godot;
-
-                 public partial class {className} : GDScriptBridge
-                 """)
-            .OpenBlock();
+        source.WriteLine($"public partial class {className} : GDScriptBridge");
+        source.OpenBlock();
         
         source.WriteLine($"public {className}(GodotObject gdObject) : base(gdObject) {{}}").WriteEmptyLines(1);
         source.WriteLine($"""public const string GDClassName = "{gdClass.ClassName}";""").WriteEmptyLines(1);

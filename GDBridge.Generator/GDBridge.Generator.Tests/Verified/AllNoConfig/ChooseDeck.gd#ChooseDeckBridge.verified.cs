@@ -22,9 +22,9 @@ public partial class ChooseDeckBridge : GDScriptBridge
 
     public Variant setup(Godot.Collections.Array<CardGame.Core.Data.DeckData> decks) => GdObject.Call(MethodName.setup, decks);
 
-    public long choose_deck() => GdObject.Call(MethodName.choose_deck, ).As<long>();
+    public long choose_deck() => GdObject.Call(MethodName.choose_deck).As<long>();
 
-    public void new_deck() => GdObject.Call(MethodName.new_deck, );
+    public void new_deck() => GdObject.Call(MethodName.new_deck);
 
     public event System.Action<long> deck_choosen
     {

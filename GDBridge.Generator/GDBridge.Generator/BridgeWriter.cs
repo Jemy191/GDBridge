@@ -106,7 +106,7 @@ class BridgeWriter
             var gdParameters = CallParameters(function.Parameters);
             var typeCast = GetTypeCast(function.ReturnType);
             
-            source.WriteLine($"""public {returnString} {funcName}({parameters}) => GdObject.Call(MethodName.{funcName}, {gdParameters}){typeCast};""");
+            source.WriteLine($"""public {returnString} {funcName}({parameters}) => GdObject.Call(MethodName.{funcName}{gdParameters}){typeCast};""");
             source.WriteEmptyLines(1);
         }
 
@@ -193,7 +193,7 @@ class BridgeWriter
     {
         if (!parameters.Any())
             return "";
-        return $"{string.Join(", ", parameters.Select(p => Pascalize(SanitizeParameter(p.Name))))}";
+        return $", {string.Join(", ", parameters.Select(p => Pascalize(SanitizeParameter(p.Name))))}";
     }
 
     string GetTypeCast(GdType type)

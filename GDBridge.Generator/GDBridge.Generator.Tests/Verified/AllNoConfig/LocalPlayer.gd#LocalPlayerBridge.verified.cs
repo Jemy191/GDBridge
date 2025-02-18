@@ -8,7 +8,7 @@ public partial class LocalPlayerBridge : GDScriptBridge
 
     public const string GDClassName = "LocalPlayer";
 
-    public void ready_to_play() => GdObject.Call(MethodName.ready_to_play, );
+    public void ready_to_play() => GdObject.Call(MethodName.ready_to_play);
 
     /// <inheritdoc cref="global::Godot.GodotObject.PropertyName"/>
     public new class PropertyName : global::Godot.GodotObject.PropertyName

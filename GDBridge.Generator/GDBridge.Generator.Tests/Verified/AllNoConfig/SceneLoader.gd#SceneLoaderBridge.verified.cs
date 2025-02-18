@@ -32,7 +32,7 @@ public partial class SceneLoaderBridge : GDScriptBridge
         set => GdObject.Set(PropertyName.current_scene, Godot.Variant.From(value));
     }
 
-    public Variant goto_menu() => GdObject.Call(MethodName.goto_menu, );
+    public Variant goto_menu() => GdObject.Call(MethodName.goto_menu);
 
     public Variant goto_arena(long player_deck_id) => GdObject.Call(MethodName.goto_arena, player_deck_id);
 
