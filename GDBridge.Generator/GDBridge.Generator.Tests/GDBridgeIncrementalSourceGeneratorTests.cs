@@ -109,6 +109,54 @@ public class GDBridgeIncrementalSourceGeneratorTests
         return Verify(driver, setting);
     }
 
+    [Fact]
+    public Task UseAppendBridgeToClassNames()
+    {
+        var driver = GeneratorDriver(ConfigTestPath, ConfigTestScript, new() { AppendBridgeToClassNames = true });
+
+        var setting = new VerifySettings();
+        setting.UseFileName(nameof(UseAppendBridgeToClassNames));
+        setting.UseDirectory("Verified");
+
+        return Verify(driver, setting);
+    }
+
+    [Fact]
+    public Task DontUseAppendBridgeToClassNames()
+    {
+        var driver = GeneratorDriver(ConfigTestPath, ConfigTestScript, new() { AppendBridgeToClassNames = false });
+
+        var setting = new VerifySettings();
+        setting.UseFileName(nameof(DontUseAppendBridgeToClassNames));
+        setting.UseDirectory("Verified");
+
+        return Verify(driver, setting);
+    }
+
+    [Fact]
+    public Task UseDefaultBridgeNamespaceWithNoMatchingClass()
+    {
+        var driver = GeneratorDriver(ConfigTestPath, ConfigTestScript, new() { DefaultBridgeNamespace = "Bridge" });
+
+        var setting = new VerifySettings();
+        setting.UseFileName(nameof(UseDefaultBridgeNamespaceWithNoMatchingClass));
+        setting.UseDirectory("Verified");
+
+        return Verify(driver, setting);
+    }
+
+    [Fact]
+    public Task UseDefaultBridgeNamespaceWithMatchingClass()
+    {
+        var driver = GeneratorDriver(ConfigTestPath, ConfigTestScript, new() { DefaultBridgeNamespace = "Bridge" }, true);
+
+        var setting = new VerifySettings();
+        setting.UseFileName(nameof(UseDefaultBridgeNamespaceWithMatchingClass));
+        setting.UseDirectory("Verified");
+
+        return Verify(driver, setting);
+    }
+
     static GeneratorDriver GeneratorDriver(string path, string script, Configuration? configuration = null, bool addMatchingConfigCSharpClass = false)
     {
         var testCodePaths = Directory.GetFiles("./TestProjectClasses")
