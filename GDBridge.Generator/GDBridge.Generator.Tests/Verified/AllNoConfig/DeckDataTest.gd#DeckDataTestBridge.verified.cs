@@ -8,10 +8,15 @@ public partial class DeckDataTestBridge : GDScriptBridge
     public CardGame.Core.Data.DeckData test_object
     {
         get => GdObject.Get("test_object").As<CardGame.Core.Data.DeckData>();
-        set => GdObject.Set("test_object", value);
+        set => GdObject.Set("test_object", Godot.Variant.From(value));
     }
 
     public DeckDataTestBridge(GodotObject gdObject) : base(gdObject) {}
 
     public void on_configure(CardGame.Core.Data.DeckData deck_data) => GdObject.Call("on_configure", deck_data);
+
+    /// <inheritdoc cref="global::Godot.GodotObject.SignalName"/>
+    public new class SignalName : global::Godot.GodotObject.SignalName
+    {
+    }
 }

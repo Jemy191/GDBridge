@@ -8,10 +8,15 @@ public partial class TestNonBuiltinGodotTypeBridge : GDScriptBridge
     public Godot.Node2D node
     {
         get => GdObject.Get("node").As<Godot.Node2D>();
-        set => GdObject.Set("node", value);
+        set => GdObject.Set("node", Godot.Variant.From(value));
     }
 
     public TestNonBuiltinGodotTypeBridge(GodotObject gdObject) : base(gdObject) {}
 
     public void on_configure(Godot.Node2D node) => GdObject.Call("on_configure", node);
+
+    /// <inheritdoc cref="global::Godot.GodotObject.SignalName"/>
+    public new class SignalName : global::Godot.GodotObject.SignalName
+    {
+    }
 }

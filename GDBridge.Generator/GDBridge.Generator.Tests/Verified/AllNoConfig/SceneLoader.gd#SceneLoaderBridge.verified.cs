@@ -8,25 +8,25 @@ public partial class SceneLoaderBridge : GDScriptBridge
     public Godot.PackedScene menuScene
     {
         get => GdObject.Get("menuScene").As<Godot.PackedScene>();
-        set => GdObject.Set("menuScene", value);
+        set => GdObject.Set("menuScene", Godot.Variant.From(value));
     }
 
     public Godot.PackedScene arenaScene
     {
         get => GdObject.Get("arenaScene").As<Godot.PackedScene>();
-        set => GdObject.Set("arenaScene", value);
+        set => GdObject.Set("arenaScene", Godot.Variant.From(value));
     }
 
     public Godot.PackedScene deckbuilderScene
     {
         get => GdObject.Get("deckbuilderScene").As<Godot.PackedScene>();
-        set => GdObject.Set("deckbuilderScene", value);
+        set => GdObject.Set("deckbuilderScene", Godot.Variant.From(value));
     }
 
     public Godot.Node current_scene
     {
         get => GdObject.Get("current_scene").As<Godot.Node>();
-        set => GdObject.Set("current_scene", value);
+        set => GdObject.Set("current_scene", Godot.Variant.From(value));
     }
 
     public SceneLoaderBridge(GodotObject gdObject) : base(gdObject) {}
@@ -36,4 +36,9 @@ public partial class SceneLoaderBridge : GDScriptBridge
     public Variant goto_arena(long player_deck_id) => GdObject.Call("goto_arena", player_deck_id);
 
     public Variant goto_deckbuilder(bool createNewDeck) => GdObject.Call("goto_deckbuilder", createNewDeck);
+
+    /// <inheritdoc cref="global::Godot.GodotObject.SignalName"/>
+    public new class SignalName : global::Godot.GodotObject.SignalName
+    {
+    }
 }

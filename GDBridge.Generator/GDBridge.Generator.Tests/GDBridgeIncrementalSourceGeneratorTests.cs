@@ -64,7 +64,7 @@ public class GDBridgeIncrementalSourceGeneratorTests
     [Fact]
     public Task UsePascalCaseConfig()
     {
-        var driver = GeneratorDriver(ConfigTestPath, ConfigTestScript, true, true);
+        var driver = GeneratorDriver(ConfigTestPath, ConfigTestScript, new() { UsePascalCase = true });
 
         var setting = new VerifySettings();
         setting.UseFileName(nameof(UsePascalCaseConfig));
@@ -76,7 +76,7 @@ public class GDBridgeIncrementalSourceGeneratorTests
     [Fact]
     public Task DontUsePascalCaseConfig()
     {
-        var driver = GeneratorDriver(ConfigTestPath, ConfigTestScript, true, false);
+        var driver = GeneratorDriver(ConfigTestPath, ConfigTestScript, new() { UsePascalCase = false });
 
         var setting = new VerifySettings();
         setting.UseFileName(nameof(DontUsePascalCaseConfig));
@@ -88,7 +88,7 @@ public class GDBridgeIncrementalSourceGeneratorTests
     [Fact]
     public Task UseGenerateOnlyForMatchingBridgeClassConfigWithMatchingClass()
     {
-        var driver = GeneratorDriver(ConfigTestPath, ConfigTestScript, true, false, true, true);
+        var driver = GeneratorDriver(ConfigTestPath, ConfigTestScript, new() { GenerateOnlyForMatchingBridgeClass = true }, true);
 
         var setting = new VerifySettings();
         setting.UseFileName(nameof(UseGenerateOnlyForMatchingBridgeClassConfigWithMatchingClass));
@@ -100,7 +100,7 @@ public class GDBridgeIncrementalSourceGeneratorTests
     [Fact]
     public Task UseGenerateOnlyForMatchingBridgeClassConfigWithNoMatchingClass()
     {
-        var driver = GeneratorDriver(ConfigTestPath, ConfigTestScript, true, false, true, false);
+        var driver = GeneratorDriver(ConfigTestPath, ConfigTestScript, new() { GenerateOnlyForMatchingBridgeClass = true }, false);
 
         var setting = new VerifySettings();
         setting.UseFileName(nameof(UseGenerateOnlyForMatchingBridgeClassConfigWithNoMatchingClass));
@@ -109,7 +109,7 @@ public class GDBridgeIncrementalSourceGeneratorTests
         return Verify(driver, setting);
     }
 
-    static GeneratorDriver GeneratorDriver(string path, string script, bool useConfiguration = false, bool usePascalCase = false, bool onlyGenMatchingClass = false, bool addMatchingConfigCSharpClass = false)
+    static GeneratorDriver GeneratorDriver(string path, string script, Configuration? configuration = null, bool addMatchingConfigCSharpClass = false)
     {
         var testCodePaths = Directory.GetFiles("./TestProjectClasses")
             .Where(f => f.EndsWith(".cs"))
@@ -132,8 +132,8 @@ public class GDBridgeIncrementalSourceGeneratorTests
             new SimpleAdditionalText(path, script)
         };
         
-        if(useConfiguration)
-            additionalTexts.Add(CreateConfigurationFile(usePascalCase, onlyGenMatchingClass));
+        if(configuration is not null)
+            additionalTexts.Add(CreateConfigurationFile(configuration));
         
         var driver = CSharpGeneratorDriver.Create(generator)
             .AddAdditionalTexts(additionalTexts.ToImmutableArray());
@@ -141,13 +141,9 @@ public class GDBridgeIncrementalSourceGeneratorTests
         return driver.RunGenerators(compilation);
     }
 
-    static AdditionalText CreateConfigurationFile(bool usePascalCase, bool onlyGenMatchingClass)
+    static AdditionalText CreateConfigurationFile(Configuration configuration)
     {
-        var json = JsonSerializer.Serialize(new
-        {
-            UsePascalCase = usePascalCase,
-            GenerateOnlyForMatchingBridgeClass = onlyGenMatchingClass
-        });
+        var json = JsonSerializer.Serialize(configuration);
         return new SimpleAdditionalText("./GDBridgeConfiguration.json", json);
     }
 }
