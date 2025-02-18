@@ -28,7 +28,7 @@ public partial class ChooseDeckBridge : GDScriptBridge
     /// <inheritdoc cref="global::Godot.GodotObject.SignalName"/>
     public new class SignalName : global::Godot.GodotObject.SignalName
     {
-
+        //
         // Summary:
         //     Cached name for the 'deck_choosen' signal.
         public static readonly StringName deck_choosen = "deck_choosen";

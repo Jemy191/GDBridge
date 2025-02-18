@@ -102,10 +102,11 @@ class BridgeWriter
             .WriteLine("""/// <inheritdoc cref="global::Godot.GodotObject.SignalName"/>""")
             .WriteLine("""public new class SignalName : global::Godot.GodotObject.SignalName""")
             .OpenBlock();
-        
-        foreach (var signal in signals) {
-            source.WriteEmptyLines(1)
-                .WriteLine("""// Summary:""")
+
+        for (int i = 0; i < signals.Count(); ++i) {
+            var signal = signals.ElementAt(i);
+            if (i > 0) source.WriteEmptyLines(1);
+            source.WriteLine("//").WriteLine("// Summary:")
                 .WriteLine($"""//     Cached name for the '{signal.Name}' signal.""")
                 .WriteLine($"""public static readonly StringName {Pascalize(signal.Name)} = "{signal.Name}";""");
         }

@@ -10,7 +10,7 @@ public partial class ConfigurableSceneBridge : GDScriptBridge
     /// <inheritdoc cref="global::Godot.GodotObject.SignalName"/>
     public new class SignalName : global::Godot.GodotObject.SignalName
     {
-
+        //
         // Summary:
         //     Cached name for the 'configure' signal.
         public static readonly StringName configure = "configure";
