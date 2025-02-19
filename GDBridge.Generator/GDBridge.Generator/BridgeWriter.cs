@@ -10,10 +10,10 @@ namespace GDBridge.Generator;
 
 class BridgeWriter
 {
-    readonly ICollection<AvailableType> availableTypes;
+    readonly IEnumerable<AvailableType> availableTypes;
     readonly SourceWriter source;
     readonly Configuration configuration;
-    public BridgeWriter(ICollection<AvailableType> availableTypes, SourceWriter source, Configuration configuration)
+    public BridgeWriter(IEnumerable<AvailableType> availableTypes, SourceWriter source, Configuration configuration)
     {
         this.availableTypes = availableTypes;
         this.source = source;
@@ -33,8 +33,8 @@ class BridgeWriter
                 .OpenBlock()
                 .WriteLine(
                     $"""
-                     get => GdObject.Get(PropertyName.{pascalizedName}){GetTypeCast(property.Type)};
-                     set => GdObject.Set(PropertyName.{pascalizedName}, Godot.Variant.From(value));
+                     get => InnerObject.Get(PropertyName.{pascalizedName}){GetTypeCast(property.Type)};
+                     set => InnerObject.Set(PropertyName.{pascalizedName}, Godot.Variant.From(value));
                      """)
                 .CloseBlock()
                 .WriteEmptyLines(1);
@@ -42,10 +42,10 @@ class BridgeWriter
         return source;
     }
 
-    public SourceWriter PropertyNameInnerClass(ReadOnlyCollection<GdVariable> properties)
+    public SourceWriter PropertyNameInnerClass(IEnumerable<GdVariable> properties, string baseClassName)
     {
-        source.WriteLine("""/// <inheritdoc cref="global::Godot.GodotObject.PropertyName"/>""")
-            .WriteLine("""public new class PropertyName : global::Godot.GodotObject.PropertyName""")
+        source.WriteLine($"""/// <inheritdoc cref="{baseClassName}.PropertyName"/>""")
+            .WriteLine($"""public new class PropertyName : {baseClassName}.PropertyName""")
             .OpenBlock();
 
         for (int i = 0; i < properties.Count(); ++i) {
@@ -106,17 +106,17 @@ class BridgeWriter
             var gdParameters = CallParameters(function.Parameters);
             var typeCast = GetTypeCast(function.ReturnType);
             
-            source.WriteLine($"""public {returnString} {funcName}({parameters}) => GdObject.Call(MethodName.{funcName}{gdParameters}){typeCast};""");
+            source.WriteLine($"""public {returnString} {funcName}({parameters}) => InnerObject.Call(MethodName.{funcName}{gdParameters}){typeCast};""");
             source.WriteEmptyLines(1);
         }
 
         return source;
     }
 
-    public SourceWriter MethodNameInnerClass(IEnumerable<GdFunction> methods)
+    public SourceWriter MethodNameInnerClass(IEnumerable<GdFunction> methods, string baseClassName)
     {
-        source.WriteLine("""/// <inheritdoc cref="global::Godot.GodotObject.MethodName"/>""")
-            .WriteLine("""public new class MethodName : global::Godot.GodotObject.MethodName""")
+        source.WriteLine($"""/// <inheritdoc cref="{baseClassName}.MethodName"/>""")
+            .WriteLine($"""public new class MethodName : {baseClassName}.MethodName""")
             .OpenBlock();
 
         for (int i = 0; i < methods.Count(); ++i) {
@@ -139,8 +139,8 @@ class BridgeWriter
             source
                 .WriteLine($"""public event System.Action{(signal.Parameters.Any() ? $"<{string.Join(", ", signal.Parameters.Select(p => $"{p.Type.ToCSharpTypeString(availableTypes)}"))}>": "")} {signalName}""")
                 .OpenBlock()
-                .WriteLine("add").OpenBlock().WriteLine($"""Connect(SignalName.{signalName}, global::Godot.Callable.From(value));""").CloseBlock()
-                .WriteLine("remove").OpenBlock().WriteLine($"""Disconnect(SignalName.{signalName}, global::Godot.Callable.From(value));""").CloseBlock()
+                .WriteLine($"""add => InnerObject.Connect(SignalName.{signalName}, global::Godot.Callable.From(value));""")
+                .WriteLine($"""remove => InnerObject.Disconnect(SignalName.{signalName}, global::Godot.Callable.From(value));""")
                 .CloseBlock()
                 .WriteEmptyLines(1);
         }
@@ -148,10 +148,10 @@ class BridgeWriter
         return source;
     }
 
-    public SourceWriter SignalNameInnerClass(IEnumerable<GdSignal> signals)
+    public SourceWriter SignalNameInnerClass(IEnumerable<GdSignal> signals, string baseClassName)
     {
-        source.WriteLine("""/// <inheritdoc cref="global::Godot.GodotObject.SignalName"/>""")
-            .WriteLine("""public new class SignalName : global::Godot.GodotObject.SignalName""")
+        source.WriteLine($"""/// <inheritdoc cref="{baseClassName}.SignalName"/>""")
+            .WriteLine($"""public new class SignalName : {baseClassName}.SignalName""")
             .OpenBlock();
 
         for (int i = 0; i < signals.Count(); ++i) {

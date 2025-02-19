@@ -8,8 +8,8 @@ class Sample : Node
         
     void Init()
     {
-        var myGDScript = new GdScriptBridgeFactory(this).ResolveBridge<ArenaBridge>(arena);
-
+        var myGDScript = ArenaBridge.From(GetNode(arena));
+        
         myGDScript.on_configure(42);
     }
 }
