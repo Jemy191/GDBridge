@@ -334,6 +334,8 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
 
         source.WriteLine($"public static {(!baseIsGodotType ? "new " : "")}{className} From({nativeTypeName} obj) => new(obj);").WriteEmptyLines(1);
 
+        source.WriteLine($"public static implicit operator {nativeTypeName}?({className} b) => b.InnerObject;").WriteEmptyLines(1);
+
         var publicProperties = gdClass.Variables.Where(x => x.Name.First() != '_').Where(x => !inheritedGdClasses.Any(c => c.Variables.Any(v => v.Name == x.Name)));
         var publicMethods = gdClass.Functions.Where(x => x.Name.First() != '_').Where(x => !inheritedGdClasses.Any(c => c.Functions.Any(f => f.Name == x.Name)));
         
