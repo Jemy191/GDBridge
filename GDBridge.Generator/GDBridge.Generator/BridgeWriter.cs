@@ -20,7 +20,7 @@ class BridgeWriter
         this.configuration = configuration;
     }
 
-    public SourceWriter Properties(ReadOnlyCollection<GdVariable> properties)
+    public SourceWriter Properties(IEnumerable<GdVariable> properties)
     {
         foreach (var property in properties)
         {
@@ -31,11 +31,16 @@ class BridgeWriter
 
             source.WriteLine($"public {property.Type.ToCSharpTypeString(availableTypes)} {pascalizedName}")
                 .OpenBlock()
-                .WriteLine(
-                    $"""
-                     get => InnerObject.Get(PropertyName.{pascalizedName}){GetTypeCast(property.Type)};
-                     set => InnerObject.Set(PropertyName.{pascalizedName}, Godot.Variant.From(value));
-                     """)
+                .WriteLine("get")
+                    .OpenBlock()
+                    .WriteLine("if(InnerObject is null) throw new System.NullReferenceException();")
+                    .WriteLine($"return InnerObject.Get(PropertyName.{pascalizedName}){GetTypeCast(property.Type)};")
+                    .CloseBlock()
+                .WriteLine("set")
+                    .OpenBlock()
+                    .WriteLine("if(InnerObject is null) throw new System.NullReferenceException();")
+                    .WriteLine($"InnerObject.Set(PropertyName.{pascalizedName}, Godot.Variant.From(value));")
+                    .CloseBlock()
                 .CloseBlock()
                 .WriteEmptyLines(1);
         }
@@ -60,7 +65,7 @@ class BridgeWriter
         return source;
     }
 
-    public SourceWriter Methods(IEnumerable<GdFunction> methods, ReadOnlyCollection<GdVariable> variables)
+    public SourceWriter Methods(IEnumerable<GdFunction> methods, IEnumerable<GdVariable> variables)
     {
         var scriptFunctions = new List<GdFunction>();
 
@@ -69,9 +74,7 @@ class BridgeWriter
         {
             // Filter out functions which start with an underscore to avoid native function overrides
             if (method.Name.StartsWith("_"))
-            {
                 continue;
-            }
 
             var defaultParams = method.Parameters.Where(p => p.Name.Contains('=')).ToList();
             if (!defaultParams.Any())
@@ -102,11 +105,11 @@ class BridgeWriter
             if (!configuration.UsePascalCase && variables.Any(v => v.Name == funcNameEnd) && funcNameStart is "get_" or "set_")
                 funcName += "_compat";
             
-            var parameters = InParameters(function.Parameters);
-            var gdParameters = CallParameters(function.Parameters);
-            var typeCast = GetTypeCast(function.ReturnType);
-            
-            source.WriteLine($"""public {returnString} {funcName}({parameters}) => InnerObject.Call(MethodName.{funcName}{gdParameters}){typeCast};""");
+            source.WriteLine($"public {returnString} {funcName}({InParameters(function.Parameters)})")
+                .OpenBlock()
+                .WriteLine("if (InnerObject is null) throw new System.NullReferenceException();")
+                .WriteLine($"{(returnString != "void" ? "return " : "")}InnerObject.Call(MethodName.{funcName}{CallParameters(function.Parameters)}){GetTypeCast(function.ReturnType)};")
+                .CloseBlock();
             source.WriteEmptyLines(1);
         }
 
@@ -139,8 +142,16 @@ class BridgeWriter
             source
                 .WriteLine($"""public event System.Action{(signal.Parameters.Any() ? $"<{string.Join(", ", signal.Parameters.Select(p => $"{p.Type.ToCSharpTypeString(availableTypes)}"))}>": "")} {signalName}""")
                 .OpenBlock()
-                .WriteLine($"""add => InnerObject.Connect(SignalName.{signalName}, global::Godot.Callable.From(value));""")
-                .WriteLine($"""remove => InnerObject.Disconnect(SignalName.{signalName}, global::Godot.Callable.From(value));""")
+                .WriteLine("add")
+                    .OpenBlock()
+                    .WriteLine("if(InnerObject is null) throw new System.NullReferenceException();")
+                    .WriteLine($"InnerObject.Connect(SignalName.{signalName}, global::Godot.Callable.From(value));")
+                    .CloseBlock()
+                .WriteLine("remove")
+                    .OpenBlock()
+                    .WriteLine("if(InnerObject is null) throw new System.NullReferenceException();")
+                    .WriteLine($"InnerObject.Disconnect(SignalName.{signalName}, global::Godot.Callable.From(value));")
+                    .CloseBlock()
                 .CloseBlock()
                 .WriteEmptyLines(1);
         }
@@ -174,16 +185,12 @@ class BridgeWriter
     {
         // Return parameter if it's already valid
         if (SyntaxFacts.GetKeywordKind(parameter) == SyntaxKind.None && SyntaxFacts.IsValidIdentifier(parameter))
-        {
             return parameter;
-        }
 
         // Remove default parameter values
         var param = parameter;
         if (parameter.Contains('='))
-        {
             param = parameter.Substring(0, parameter.IndexOf('=')).Trim();
-        }
 
         // Validate it's not a reserved keyword
         return SyntaxFacts.GetKeywordKind(param) == SyntaxKind.None && SyntaxFacts.IsValidIdentifier(param) ? param : $"@{param}";

@@ -8,8 +8,12 @@ class Sample : Node
         
     void Init()
     {
-        var myGDScript = ArenaBridge.From(GetNode(arena));
+        var arenaBridge = ArenaBridge.From(GetNode(arena));
         
-        myGDScript.on_configure(42);
+        arenaBridge.on_configure(42);
+
+        //var chooseDeckBridge = new ChooseDeckBridge();
+        //chooseDeckBridge.choose_deck();
+        //chooseDeckBridge.QueueFree();
     }
 }

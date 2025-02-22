@@ -8,6 +8,7 @@ using SourceGeneratorUtils;
 using System.Text.Json;
 using System.Diagnostics;
 using System.Text;
+using System.IO;
 
 namespace GDBridge.Generator;
 
@@ -61,7 +62,7 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
             if (existingNamespace is null && !string.IsNullOrWhiteSpace(configuration.DefaultBridgeNamespace))
                 existingNamespace = configuration.DefaultBridgeNamespace;
 
-            (string baseClassTypeName, string nativeTypeName, bool isGodotType) GetBaseClass(GdClass _gdClass) {
+            (string baseClassTypeName, string nativeTypeName, bool isGodotType, IEnumerable<GdClass> inheritedGdClasses) GetBaseClass(GdClass _gdClass) {
                 (string TypeString, GdBuiltInType BuiltInType, string CSharpTypeString) baseType
                     = (_gdClass.Extend?.TypeString ?? "Object", _gdClass.Extend?.BuiltInType ?? GdBuiltInType.Object, _gdClass.Extend?.ToCSharpTypeString(availableTypes) ?? "Godot.GodotObject");
                 if (!usedBaseTypes.Any(x => (_gdClass.Extend?.IsBuiltIn ?? true && x.BuiltInType == baseType.BuiltInType) || (x.TypeString == baseType.TypeString)))
@@ -69,7 +70,7 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
                 
                 var godotBaseClass = availableTypes.SingleOrDefault(x => (x.Name == baseType.TypeString || (baseType.TypeString == "Object" && x.Name == "GodotObject")) && x.Namespace == "Godot");
                 if (godotBaseClass is not null)
-                    return ($"global::GDBridge.{godotBaseClass.Name}Proxy", $"global::Godot.{godotBaseClass.Name}", true);
+                    return ($"global::GDBridge.{godotBaseClass.Name}Proxy", $"global::Godot.{godotBaseClass.Name}", true, []);
                 
                 var baseClassName = baseType.TypeString;
                 if (configuration.AppendBridgeToClassNames) baseClassName = $"{baseType.TypeString}Bridge";
@@ -82,19 +83,21 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
                 
                 var baseClass = gdClasses.SingleOrDefault(x => x.Item2?.ClassName == baseType.TypeString).Item2;
                 if (baseClass is null)
-                    return ("INVALID", "INVALID", false);
+                    return ("INVALID", "INVALID", false, []);
 
-                return ($"global::{baseNamespace}{(!string.IsNullOrWhiteSpace(baseNamespace) ? "." : "")}{baseClassName}", GetBaseClass(baseClass).nativeTypeName, false);
+                var (_, nativeTypeName, _, inheritedGdClasses) = GetBaseClass(baseClass);
+                var inherited = inheritedGdClasses.ToList();
+                inherited.Add(baseClass);
+
+                return ($"global::{baseNamespace}{(!string.IsNullOrWhiteSpace(baseNamespace) ? "." : "")}{baseClassName}", nativeTypeName, false, inherited);
             }
             
-            var (baseClassTypeName, nativeTypeName, baseIsGodotType) = GetBaseClass(gdClass);
-            var source = GenerateClass(gdClass, className, scriptPath, baseClassTypeName, nativeTypeName, baseIsGodotType, availableTypes, configuration, existingNamespace);
+            var (baseClassTypeName, nativeTypeName, baseIsGodotType, inheritedGdClasses) = GetBaseClass(gdClass);
+            var source = GenerateClass(gdClass, className, scriptPath, baseClassTypeName, nativeTypeName, baseIsGodotType, inheritedGdClasses, availableTypes, configuration, existingNamespace);
             context.AddSource(className, source);
         }
         
         var godotTypes = compilation.SourceModule.ReferencedAssemblySymbols.FirstOrDefault(e => e.Name == "GodotSharp")?.GlobalNamespace?.GetNamespaceMembers()?.First(n => n.Name == "Godot")?.GetMembers().Where(m => m.IsType);
-
-        context.AddSource("DebugSource", string.Join("\n", usedBaseTypes.Select(x => $"//{x.TypeString}, {x.BuiltInType}, {x.CSharpTypeString}")));
 
         foreach (var (typeString, builtInType, cSharpTypeString) in usedBaseTypes)
         {
@@ -106,24 +109,15 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
 
             var source = new SourceWriter();
 
+            source.WriteLine("#nullable enable");
             source.WriteLine("namespace GDBridge").OpenBlock();
 
             source.WriteLine($"""/// <inheritdoc cref="global::Godot.{typeString}"/>""");
             source.WriteLine($"public abstract class {proxyName}").OpenBlock();
             
             // This is public because there are instances such as having to down-cast it where the user needs access to the inner object
-            source.WriteLine($"public global::Godot.{typeString} InnerObject {{ get; private set; }}");
-            source.WriteLine($"protected {proxyName}(global::Godot.{typeString} innerObject) => InnerObject = innerObject;").WriteEmptyLines(1);
-
-            source.WriteLine($"protected void SafelySetScript(global::Godot.Resource scriptResource)")
-                .OpenBlock()
-                .WriteLine("var godotObjectId = InnerObject.GetInstanceId();")
-                .WriteLine("InnerObject.SetScript(scriptResource);")
-                .WriteLine($"var newObject = global::Godot.GodotObject.InstanceFromId(godotObjectId) as global::Godot.{typeString};")
-                .WriteLine("if (newObject is not null)")
-                .WriteLine("    InnerObject = newObject;")
-                .CloseBlock()
-                .WriteEmptyLines(1);
+            source.WriteLine($"public global::Godot.{typeString}? InnerObject {{ get; private set; }}");
+            source.WriteLine($"protected {proxyName}(global::Godot.{typeString}? innerObject) => InnerObject = innerObject;").WriteEmptyLines(1);
 
             List<(ISymbol Symbol, ITypeSymbol OwningType)> publicMembers = [];
             var tempType = godotType;
@@ -151,10 +145,18 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
                     .OpenBlock();
 
                 if (property.GetMethod is not null)
-                    source.WriteLine($"get => InnerObject.{property.Name};");
+                    source.WriteLine($"get")
+                    .OpenBlock()
+                    .WriteLine($"if (InnerObject is null) throw new System.NullReferenceException();")
+                    .WriteLine($"return InnerObject.{property.Name};")
+                    .CloseBlock();
                 
                 if (property.SetMethod is not null)
-                    source.WriteLine($"set => InnerObject.{property.Name} = value;");
+                    source.WriteLine($"set")
+                    .OpenBlock()
+                    .WriteLine($"if (InnerObject is null) throw new System.NullReferenceException();")
+                    .WriteLine($"InnerObject.{property.Name} = value;")
+                    .CloseBlock();
                 
                 source.CloseBlock();
                 
@@ -183,10 +185,18 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
                     .OpenBlock();
                 
                 if (@event.AddMethod is not null)
-                    source.WriteLine($"add => InnerObject.{@event.Name} += value;");
+                    source.WriteLine($"add")
+                    .OpenBlock()
+                    .WriteLine($"if (InnerObject is null) throw new System.NullReferenceException();")
+                    .WriteLine($"InnerObject.{@event.Name} += value;")
+                    .CloseBlock();
                 
                 if (@event.RemoveMethod is not null)
-                    source.WriteLine($"remove => InnerObject.{@event.Name} -= value;");
+                    source.WriteLine($"remove")
+                    .OpenBlock()
+                    .WriteLine($"if (InnerObject is null) throw new System.NullReferenceException();")
+                    .WriteLine($"InnerObject.{@event.Name} -= value;")
+                    .CloseBlock();
                 
                 source.CloseBlock();
                 
@@ -206,17 +216,19 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
                 if (obsoleteAttribute is not null)
                     source.WriteLine("#pragma warning disable 0618");
 
-                var genericParameters = !method.TypeParameters.IsEmpty ? $"<{string.Join(", ", method.TypeParameters)}>" : "";
-                var whereStatements = string.Join("", method.TypeParameters.Select(x => $" where {x.Name} : class"));
-                var methodSignature = $"public {(method.Name == "ToString" ? "override " : "")}{method.ReturnType} {method.Name}{genericParameters}({string.Join(", ", method.Parameters)}){whereStatements}";
-                var proxyCall = $"InnerObject.{method.Name}{genericParameters}({string.Join(", ", method.Parameters.Select(x => $"@{x.Name}"))})";
-
                 source.WriteLine($"""/// <inheritdoc cref="global::Godot.{owningType}.{method.Name}"/>""");
 
                 if (obsoleteAttribute is not null)
                     source.WriteLine($"[System.Obsolete({string.Join(", ", obsoleteAttribute.ConstructorArguments.Select(x => $"\"{x.Value}\""))})]");
+                
+                var genericParameters = !method.TypeParameters.IsEmpty ? $"<{string.Join(", ", method.TypeParameters)}>" : "";
+                var whereStatements = string.Join("", method.TypeParameters.Select(x => $" where {x.Name} : class"));
 
-                source.WriteLine($"{methodSignature} => {proxyCall};");
+                source.WriteLine($"public {(method.Name == "ToString" ? "override " : "")}{method.ReturnType} {method.Name}{genericParameters}({string.Join(", ", method.Parameters)}){whereStatements}")
+                    .OpenBlock()
+                    .WriteLine($"if (InnerObject is null) throw new System.NullReferenceException();")
+                    .WriteLine($"{(method.ReturnType.SpecialType != SpecialType.System_Void ? "return " : "")}InnerObject.{method.Name}{genericParameters}({string.Join(", ", method.Parameters.Select(x => $"@{x.Name}"))});")
+                    .CloseBlock();
 
                 if (obsoleteAttribute is not null)
                     source.WriteLine("#pragma warning restore 0618");
@@ -297,12 +309,13 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
         return childNamespace;
     }
 
-    static string GenerateClass(GdClass gdClass, string className, string scriptFilename, string baseClassName, string nativeTypeName, bool baseIsGodotType, IEnumerable<AvailableType> availableTypes, Configuration configuration, string? existingNamespace = null)
+    static string GenerateClass(GdClass gdClass, string className, string scriptFilename, string baseClassName, string nativeTypeName, bool baseIsGodotType, IEnumerable<GdClass> inheritedGdClasses, IEnumerable<AvailableType> availableTypes, Configuration configuration, string? existingNamespace = null)
     {
         var source = new SourceWriter();
         var bridgeWriter = new BridgeWriter(availableTypes, source, configuration);
         
         source.WriteLine("using GDBridge;").WriteLine("using Godot;").WriteEmptyLines(1);
+        source.WriteLine("#nullable enable");
 
         if (!string.IsNullOrWhiteSpace(existingNamespace))
             source
@@ -312,26 +325,24 @@ public class GDBridgeIncrementalSourceGenerator : IIncrementalGenerator
         source.WriteLine($"public partial class {className} : {baseClassName}");
         source.OpenBlock();
 
-        source.WriteLine($"""public {(!baseIsGodotType ? "new " : "")}const string GDClassName = "{gdClass.ClassName}";""").WriteEmptyLines(1);
-
-        source.WriteLine($"""private static readonly global::Godot.Resource ScriptResource = global::Godot.ResourceLoader.Load("{scriptFilename.Replace('\\', '/')}");""");
+        source.WriteLine($"""public {(!baseIsGodotType ? "new " : "")}const string GDClassName = "{gdClass.ClassName}";""");
+        //source.WriteLine($"""private static readonly global::Godot.GDScript? ScriptResource = global::Godot.ResourceLoader.Load<global::Godot.GDScript>(global::Godot.ProjectSettings.LocalizePath("{Path.GetFullPath(scriptFilename).Replace("\\", "\\\\")}"));""");
+        source.WriteEmptyLines(1);
         
-        source.WriteLine($"public {className}() : base(new {nativeTypeName}())")
-            .OpenBlock()
-            .WriteLine($"SafelySetScript(ScriptResource);")
-            .CloseBlock()
-            .WriteEmptyLines(1);
-        
-        source.WriteLine($"protected {className}({nativeTypeName} innerObject) : base(innerObject) {{}}").WriteEmptyLines(1);
+        //source.WriteLine($"public {className}() : base(ScriptResource.New()) {{ }}");
+        source.WriteLine($"protected {className}({nativeTypeName}? innerObject) : base(innerObject) {{}}").WriteEmptyLines(1);
 
         source.WriteLine($"public static {(!baseIsGodotType ? "new " : "")}{className} From({nativeTypeName} obj) => new(obj);").WriteEmptyLines(1);
+
+        var publicProperties = gdClass.Variables.Where(x => x.Name.First() != '_').Where(x => !inheritedGdClasses.Any(c => c.Variables.Any(v => v.Name == x.Name)));
+        var publicMethods = gdClass.Functions.Where(x => x.Name.First() != '_').Where(x => !inheritedGdClasses.Any(c => c.Functions.Any(f => f.Name == x.Name)));
         
-        bridgeWriter.Properties(gdClass.Variables);
-        bridgeWriter.Methods(gdClass.Functions, gdClass.Variables);
+        bridgeWriter.Properties(publicProperties);
+        bridgeWriter.Methods(publicMethods, publicProperties);
         bridgeWriter.Signals(gdClass.Signals);
 
-        bridgeWriter.PropertyNameInnerClass(gdClass.Variables.Where(x => x.Name.First() != '_'), baseClassName).WriteEmptyLines(1);
-        bridgeWriter.MethodNameInnerClass(gdClass.Functions.Where(x => x.Name.First() != '_'), baseClassName).WriteEmptyLines(1);
+        bridgeWriter.PropertyNameInnerClass(publicProperties, baseClassName).WriteEmptyLines(1);
+        bridgeWriter.MethodNameInnerClass(publicMethods, baseClassName).WriteEmptyLines(1);
         bridgeWriter.SignalNameInnerClass(gdClass.Signals, baseClassName);
 
         source.CloseAllBlocks();
