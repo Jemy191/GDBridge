@@ -8,7 +8,7 @@ public partial class CSharpGDObjectBridge : GDScriptBridge
     public TestGDObject test_object
     {
         get => GdObject.Get("test_object").As<TestGDObject>();
-        set => GdObject.Set("test_object", value);
+        set => GdObject.Set("test_object", Godot.Variant.From(value));
     }
 
     public CSharpGDObjectBridge(GodotObject gdObject) : base(gdObject) {}

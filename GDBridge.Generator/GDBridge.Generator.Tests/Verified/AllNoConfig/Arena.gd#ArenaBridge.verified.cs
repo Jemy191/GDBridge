@@ -8,7 +8,7 @@ public partial class ArenaBridge : GDScriptBridge
     public Godot.NodePath game_startup
     {
         get => GdObject.Get("game_startup").As<Godot.NodePath>();
-        set => GdObject.Set("game_startup", value);
+        set => GdObject.Set("game_startup", Godot.Variant.From(value));
     }
 
     public ArenaBridge(GodotObject gdObject) : base(gdObject) {}

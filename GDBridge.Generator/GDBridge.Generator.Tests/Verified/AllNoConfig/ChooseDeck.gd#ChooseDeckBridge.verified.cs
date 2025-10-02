@@ -8,13 +8,13 @@ public partial class ChooseDeckBridge : GDScriptBridge
     public Godot.PackedScene deckEntryScene
     {
         get => GdObject.Get("deckEntryScene").As<Godot.PackedScene>();
-        set => GdObject.Set("deckEntryScene", value);
+        set => GdObject.Set("deckEntryScene", Godot.Variant.From(value));
     }
 
     public Godot.PackedScene deckBuilderScene
     {
         get => GdObject.Get("deckBuilderScene").As<Godot.PackedScene>();
-        set => GdObject.Set("deckBuilderScene", value);
+        set => GdObject.Set("deckBuilderScene", Godot.Variant.From(value));
     }
 
     public ChooseDeckBridge(GodotObject gdObject) : base(gdObject) {}
