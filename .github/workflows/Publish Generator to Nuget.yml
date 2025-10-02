@@ -18,6 +18,8 @@ jobs:
     
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 7.0.x
 
     - name: Pack
       run: dotnet pack GDBridge.Generator/GDBridge.Generator/GDBridge.Generator.csproj --configuration Release -p:PackageVersion=${{ env.Version }} --output .
