@@ -8,7 +8,7 @@ public partial class ScriptWithPropertyAndGetSetFuncBridge : GDScriptBridge
     public Variant limit_target
     {
         get => GdObject.Get("limit_target");
-        set => GdObject.Set("limit_target", value);
+        set => GdObject.Set("limit_target", Godot.Variant.From(value));
     }
 
     public ScriptWithPropertyAndGetSetFuncBridge(GodotObject gdObject) : base(gdObject) {}

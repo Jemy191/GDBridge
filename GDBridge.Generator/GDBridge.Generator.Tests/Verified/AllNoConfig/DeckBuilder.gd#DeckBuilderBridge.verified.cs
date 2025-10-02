@@ -8,7 +8,7 @@ public partial class DeckBuilderBridge : GDScriptBridge
     public bool createNewDeck
     {
         get => GdObject.Get("createNewDeck").As<bool>();
-        set => GdObject.Set("createNewDeck", value);
+        set => GdObject.Set("createNewDeck", Godot.Variant.From(value));
     }
 
     public DeckBuilderBridge(GodotObject gdObject) : base(gdObject) {}

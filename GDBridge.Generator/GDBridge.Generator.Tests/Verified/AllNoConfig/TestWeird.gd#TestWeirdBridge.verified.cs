@@ -8,7 +8,7 @@ public partial class TestWeirdBridge : GDScriptBridge
     public Godot.Variant chooseDeck
     {
         get => GdObject.Get("chooseDeck").As<Godot.Variant>();
-        set => GdObject.Set("chooseDeck", value);
+        set => GdObject.Set("chooseDeck", Godot.Variant.From(value));
     }
 
     public TestWeirdBridge(GodotObject gdObject) : base(gdObject) {}

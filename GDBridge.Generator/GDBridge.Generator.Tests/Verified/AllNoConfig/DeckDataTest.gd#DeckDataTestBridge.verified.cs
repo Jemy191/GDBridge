@@ -8,7 +8,7 @@ public partial class DeckDataTestBridge : GDScriptBridge
     public CardGame.Core.Data.DeckData test_object
     {
         get => GdObject.Get("test_object").As<CardGame.Core.Data.DeckData>();
-        set => GdObject.Set("test_object", value);
+        set => GdObject.Set("test_object", Godot.Variant.From(value));
     }
 
     public DeckDataTestBridge(GodotObject gdObject) : base(gdObject) {}

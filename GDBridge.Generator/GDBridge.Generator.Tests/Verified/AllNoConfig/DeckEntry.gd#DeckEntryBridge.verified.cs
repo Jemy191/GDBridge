@@ -8,13 +8,13 @@ public partial class DeckEntryBridge : GDScriptBridge
     public long deckId
     {
         get => GdObject.Get("deckId").As<long>();
-        set => GdObject.Set("deckId", value);
+        set => GdObject.Set("deckId", Godot.Variant.From(value));
     }
 
     public Godot.Variant chooseDeck
     {
         get => GdObject.Get("chooseDeck").As<Godot.Variant>();
-        set => GdObject.Set("chooseDeck", value);
+        set => GdObject.Set("chooseDeck", Godot.Variant.From(value));
     }
 
     public DeckEntryBridge(GodotObject gdObject) : base(gdObject) {}
