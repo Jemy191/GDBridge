@@ -1,5 +1,5 @@
 # Abandoned
-This project is abandoned if anyone want to take ownership of it contact me.
+This project is abandoned if anyone want to take ownership of it contact me github@jemy191.ca.
 
 
 
